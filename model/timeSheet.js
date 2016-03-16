@@ -6,24 +6,28 @@ var Schema = mongoose.Schema;
 // create a schema
 var timeSheetSchema = new Schema({
   username: {type: String, required: true},
-  sundayTimeStamp: {type: Date, required: true},
+  sundayDate: {type: Date, required: true},
   lineItems : [LineItem.LineItemSchema]
 });
  
-// add total hours method to the schema
+// add getTotalHours() to the schema
 timeSheetSchema.methods.getTotalHours = function getTotalHours() {
- 
-                var total = 0;
-                var temp = 0;
- 
-                for (i = 0; i < this.lineItems.length; ++i) {
-                                temp = this.lineItems[i].getTotalHours()
-                                if (!isNaN(parseFloat(temp))) {
-                                                 total += parseFloat(temp);
-                                }
-                }
- 
-                return total;
+
+  // set up variables
+  var total = 0;
+  var temp = 0;
+
+  // iterate through each line item
+  for (i = 0; i < this.lineItems.length; ++i) {
+
+    // if this line item has hours, add to total
+    temp = this.lineItems[i].getTotalHours()
+    if (!isNaN(parseFloat(temp))) {
+      total += parseFloat(temp);
+    }
+  }
+
+  return total;
 };
  
 // create a model using the schema
