@@ -1,37 +1,40 @@
-'use strict';
-
 var express = require('express');
 var router = express.Router();
 
-const timeSheetData = {
+const timeSheetData = [
 	{ 
-		sundayTimeStamp : '2016-04-20',
+		  sundayTimeStamp : '2016-04-20',
   		userName : 'maclp3',
   		totalHours : 42
   	},
 	{
-		sundayTimeStamp : '2016-04-13',
+		  sundayTimeStamp : '2016-04-13',
   		userName : 'maclp3',
   		totalHours : 69
 	},
 	{
-		sundayTimeStamp : '2016-04-06',
+	   	sundayTimeStamp : '2016-04-06',
   		userName : 'maclp3',
   		totalHours : 311
 	}
-};
+];
 
 /* GET timeSheets page. */
-router.get('/timeSheets', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.json(timeSheetData);
 });
 
 /* GET test page. */
-router.get('/timeSheets/{date}', function(req, res, next) {
+router.get('/idk', function(req, res, next) {
+
+    // example.com/ISOdate?param=val
+    // SHould return /ISOdate
+    const isoDate = req.path;
+
   res.json({
   				class : 'timeSheetRecord',
-  				sundayTimeStamp : '2020-04-01',
-  				userName : 'big$C',1
+  				sundayTimeStamp : isoDate,
+  				userName : 'big$C',
   				totalHours : 69
   			});
 });
