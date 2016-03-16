@@ -25,11 +25,17 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET test page. */
-router.get('/idk', function(req, res, next) {
+router.get('/*', function(req, res, next) {
 
-    // example.com/ISOdate?param=val
-    // SHould return /ISOdate
-    const isoDate = req.path;
+    // Get the string following second /
+    var isoDate = req.path;
+
+    // Remove the preceeding /
+    if (isoDate.charAt(0) === '/'){
+      isoDate = isoDate.substring(1);
+    } 
+
+    // Ensure it is a date (of ISO format)
 
   res.json({
   				class : 'timeSheetRecord',

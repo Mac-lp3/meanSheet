@@ -5,9 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// model objects
+var lineItemBuilder = require('./model/lineItem');
+var timeSheetBuilder = require('./model/timeSheet');
+
+// routing
 var routes = require('./routes/index');
 var timeSheets = require('./routes/timeSheets');
 var users = require('./routes/users');
+var setup = require('./routes/setup');
 
 var app = express();
 
@@ -24,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/setup', setup);
 app.use('/timeSheets', timeSheets);
 app.use('/users', users);
 
