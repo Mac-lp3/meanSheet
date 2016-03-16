@@ -13,7 +13,7 @@ will be included in reports against that project.
 var taskSchema = new Schema({
   code: { type: String, required: true},
   name: { type: String, required: true},
-  author: { type: String, required: true},
+  author: {type: String, required: true},
   owner: {type : String, required: true},
   projectCode: {type : String, required: false},
   description: {type: String, required: true}

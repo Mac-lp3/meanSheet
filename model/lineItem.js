@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var lineItemSchema = new Schema({
   username: { type: String, required: true},
   sundayDate: { type: Date, required: true},
-  workItemKey : {type : String, required: true},
+  workItemCode : {type : String, required: true},
   mondayHours: {type: Number, min: 0, max: 24, required: true},
   tuesdayHours: {type: Number, min: 0, max: 24, required: true},
   wednesdayHours: {type: Number, min: 0, max: 24, required: true},
