@@ -15,7 +15,7 @@ var projectSchema = new Schema({
   name: { type: String, required: true},
   author: { type: String, required: true},
   owner: {type : String, required: true},
-  taskCodes: [type : String],
+  taskCodes: [String],
   description: {type: String, required: true}
 });
 

@@ -5,10 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// model objects
-var lineItemBuilder = require('./model/lineItem');
-var timeSheetBuilder = require('./model/timeSheet');
-
 // routing
 var routes = require('./routes/index');
 var timeSheets = require('./routes/timeSheets');

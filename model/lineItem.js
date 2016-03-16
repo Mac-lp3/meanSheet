@@ -43,7 +43,7 @@ lineItemSchema.methods.getTotalHours = function getTotalHours() {
     total += parseFloat(this.sundayHours);
   }
  
-                return total;
+  return total;
 };
  
 // create a model using the schema
