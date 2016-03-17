@@ -1,8 +1,8 @@
-// Grab stuff we need
+/* grab server stuff */
 var express = require('express');
 var router = express.Router();
 
-// mongoose models
+/* grab models */
 var TimeSheet = require('../model/timeSheet');
 var LineItem = require('../model/lineItem');
 var User = require('../model/user');
@@ -36,7 +36,7 @@ user4.department = "IDK";
 
 const testUsers = [user1, user2, user3, user4];
 
-/* set up test work items */
+/* build test work items */
 var project1 = new Project();
 project1.code = "p0001";
 project1.name = "idk sum proj";
@@ -73,11 +73,11 @@ const testTasks = [task1, task2];
 /* GET home page. */
 router.get('/workItems', function(req, res, next) {
 
-    // TODO iterate through projects/tasks
     for (i = 0; i < testProjects.length; ++i) {
         // TODO check if work item exists in DB
         // TODO if no, save, if yes, skip
     }
+
     for (i = 0; i < testTasks.length; ++i) {
        // TODO check if work item exists in DB
        // TODO if no, save, if yes, skip
@@ -133,6 +133,8 @@ router.get('/timeSheets', function(req, res, next) {
     lineItem3.fridayHours = 8;
 
     timeSheet2.lineItems.push(lineItem3);
+
+    // TODO iterate through time sheets and save
  
     res.json([timeSheet1, timeSheet2]);
 });

@@ -1,26 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-const timeSheetData = [
-	{ 
-		  sundayTimeStamp : '2016-04-20',
-  		userName : 'maclp3',
-  		totalHours : 42
-  	},
-	{
-		  sundayTimeStamp : '2016-04-13',
-  		userName : 'maclp3',
-  		totalHours : 69
-	},
-	{
-	   	sundayTimeStamp : '2016-04-06',
-  		userName : 'maclp3',
-  		totalHours : 311
-	}
-];
-
 /* GET timeSheets page. */
 router.get('/', function(req, res, next) {
+
+  // Assume single user for now
+
+  // TODO go to DB and get previous X time sheets
+
   res.json(timeSheetData);
 });
 
@@ -36,6 +23,10 @@ router.get('/*', function(req, res, next) {
     } 
 
     // Ensure it is a date (of ISO format)
+
+    // search DB by username and sundayDate
+    // create new if not found
+    // send that one back to user
 
   res.json({
   				class : 'timeSheetRecord',
