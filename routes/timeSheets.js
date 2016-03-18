@@ -8,7 +8,6 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 
   // TODO go to DB and get previous X time sheets
-
   res.json(testData.testTimeSheets);
 });
 
@@ -22,6 +21,8 @@ router.get('/:dateString', function(req, res, next) {
     if (isoDate.charAt(0) === '/'){
       isoDate = isoDate.substring(1);
     } 
+
+    console.log('fetching time sheet for: ' + isoDate);
 
     // Parse date and check validity
     var providedDate = moment(isoDate, 'YYYY-MM-DD');
