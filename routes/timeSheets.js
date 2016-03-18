@@ -1,39 +1,47 @@
 var express = require('express');
+var testData = require('../test/datastore/testData');
+var moment = require('moment');
 var router = express.Router();
+
 
 /* GET timeSheets page. */
 router.get('/', function(req, res, next) {
 
-  // Assume single user for now
-
   // TODO go to DB and get previous X time sheets
 
-  res.json(timeSheetData);
+  res.json(testData.testTimeSheets);
 });
 
 /* GET test page. */
-router.get('/*', function(req, res, next) {
+router.get('/:dateString', function(req, res, next) {
 
-    // Get the string following second /
+    // Get the date path variable
     var isoDate = req.path;
 
-    // Remove the preceeding /
+    // Remove the preceeding '/''
     if (isoDate.charAt(0) === '/'){
       isoDate = isoDate.substring(1);
     } 
 
-    // Ensure it is a date (of ISO format)
+    // Parse date and check validity
+    var providedDate = moment(isoDate, 'YYYY-MM-DD');
+    if (providedDate != null && providedDate.isValid()) {
+      
+      // valid - search DB by username and sundayDate
+      var timeSheet = testData.testTimeSheets[0];
+      
+      // create new if not found
 
-    // search DB by username and sundayDate
-    // create new if not found
-    // send that one back to user
+      res.json(timeSheet);
+    
+    } else {
 
-  res.json({
-  				class : 'timeSheetRecord',
-  				sundayTimeStamp : isoDate,
-  				userName : 'big$C',
-  				totalHours : 69
-  			});
+      // invalid format - send to not found
+      res.render('error', {
+        message: 'Not a proper date, bud',
+        error: 'idk'
+      });
+    }
 });
 
 module.exports = router;

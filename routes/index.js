@@ -1,9 +1,15 @@
 var express = require('express');
+var path = require('path');
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
+});
+
+/* GET dash page. */
+router.get('/dash', function(req, res, next) {
+  	res.sendFile(path.join(__dirname, '/../public/html/index.html'));
 });
 
 module.exports = router;
