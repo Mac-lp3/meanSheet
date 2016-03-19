@@ -32,34 +32,34 @@ meanApp.controller('DashboardController', function($http) {
 
    	self.getPreviousTimeSheet = function () {
    		
+   		// get current date and subtract 7 days
    		var tempDate = new Date(self.currentTimeSheet.sundayDate);
    		tempDate.setDate(tempDate.getDate() - 7);
 
+   		// build query string
    		var dd = tempDate.getDate();
 		var mm = tempDate.getMonth()+1; //January is 0!
 		var yyyy = tempDate.getFullYear();
 
-		/* update current time sheet and readable date */
+		// get new time sheet and update readable date
 		self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
    		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-
-   		console.log('Prev: ' + yyyy + '-' + mm + '-' + dd);
    	};
 
    	self.getNextTimeSheet = function () {
    		
+   		// get current date and add 7 days
    		var tempDate = new Date(self.currentTimeSheet.sundayDate);
    		tempDate.setDate(tempDate.getDate() + 7);
 
+   		// build query string
    		var dd = tempDate.getDate();
 		var mm = tempDate.getMonth()+1; //January is 0!
 		var yyyy = tempDate.getFullYear();
 
-		/* update current time sheet and readable date */
+		// get new time sheet and update readable date
 		self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
    		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-
-   		console.log('Next: ' + yyyy + '-' + mm + '-' + dd);
    	};
 
    	/* helper method for the http call to time sheets */
