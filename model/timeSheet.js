@@ -7,7 +7,9 @@ var Schema = mongoose.Schema;
 var timeSheetSchema = new Schema({
   username: {type: String, required: true},
   sundayDate: {type: Date, required: true},
-  lineItems : [LineItem.LineItemSchema]
+  lineItems : [LineItem.LineItemSchema],
+  isSubmitted: {type: Boolean, default: false},
+  isApproved: {type: Boolean, default: false}
 });
  
 // add getTotalHours() to the schema

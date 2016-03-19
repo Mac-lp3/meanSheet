@@ -45,4 +45,12 @@ router.get('/:dateString', function(req, res, next) {
     }
 });
 
+router.delete('/:dateString/lineItems/:workItemCode', function(req, res, next){
+
+});
+
+router.post('/:dateString/lineItems/:workItemCode', function(req, res, next){
+
+});
+
 module.exports = router;
