@@ -31,6 +31,26 @@ timeSheetSchema.methods.getTotalHours = function getTotalHours() {
 
   return total;
 };
+
+// add getTotalMondayHours() to the schema
+timeSheetSchema.methods.getTotalMondayHours = function getTotalHours() {
+
+  // set up variables
+  var total = 0;
+  var temp = 0;
+
+  // iterate through each line item
+  for (i = 0; i < this.lineItems.length; ++i) {
+
+    // if this line item has hours, add to total
+    temp = this.lineItems[i].mondayHours;
+    if (!isNaN(parseFloat(temp))) {
+      total += parseFloat(temp);
+    }
+  }
+
+  return total;
+};
  
 // create a model using the schema
 var TimeSheet = mongoose.model('TimeSheet', timeSheetSchema);

@@ -1,5 +1,6 @@
 var express = require('express');
 var testData = require('../test/datastore/testData');
+var LineItem = require('../model/lineItem');
 var moment = require('moment');
 var router = express.Router();
 
@@ -15,12 +16,7 @@ router.get('/', function(req, res, next) {
 router.get('/:dateString', function(req, res, next) {
 
     // Get the date path variable
-    var isoDate = req.path;
-
-    // Remove the preceeding '/''
-    if (isoDate.charAt(0) === '/'){
-      isoDate = isoDate.substring(1);
-    } 
+    var isoDate = req.params.dateString;
 
     console.log('fetching time sheet for: ' + isoDate);
 
@@ -45,11 +41,25 @@ router.get('/:dateString', function(req, res, next) {
     }
 });
 
+/* remove line item from time sheet */
 router.delete('/:dateString/lineItems/:workItemCode', function(req, res, next){
+
+  // Get the date path variable
+  var isoDate = req.params.dateString;
+  var workItemCode = req.params.workItemCode;
 
 });
 
+/* add new line item to time sheet */
 router.post('/:dateString/lineItems/:workItemCode', function(req, res, next){
+
+  // Get the date path variable
+  var isoDate = req.params.dateString;
+  var workItemCode = req.params.workItemCode;
+
+  // TODO get time sheet and transfer values.
+  var lineItem = new LineItem.LineItemModel();
+  lineItem.workItemCode = workItemCode;
 
 });
 
