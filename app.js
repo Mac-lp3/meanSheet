@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 // routing
 var routes = require('./routes/index');
@@ -29,6 +30,8 @@ app.use('/', routes);
 app.use('/setup', setup);
 app.use('/timeSheets', timeSheets);
 app.use('/users', users);
+
+mongoose.connect('mongodb://localhost/mean-dev');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
   res.json(testData.testTimeSheets);
 });
 
-/* GET test page. */
+/* Get single time sheet by date. */
 router.get('/:dateString', function(req, res, next) {
 
     // Get the date path variable
@@ -23,11 +23,16 @@ router.get('/:dateString', function(req, res, next) {
     // Parse date and check validity
     var providedDate = moment(isoDate, 'YYYY-MM-DD');
     if (providedDate != null && providedDate.isValid()) {
-      
+
       // valid - search DB by username and sundayDate
-      var timeSheet = testData.testTimeSheets[0];
+
+      // Time sheets saved based on sunday date
+      providedDate.day('Sunday');
       
+      // TODO query mongoose
+
       // create new if not found
+      var timeSheet = testData.testTimeSheets[0];
 
       res.json(timeSheet);
     
@@ -47,6 +52,10 @@ router.delete('/:dateString/lineItems/:workItemCode', function(req, res, next){
   // Get the date path variable
   var isoDate = req.params.dateString;
   var workItemCode = req.params.workItemCode;
+
+  // TODO query mongoose for time sheet 
+  // TODO iterate over line items
+  // TODO remove the one that matches
 
 });
 
