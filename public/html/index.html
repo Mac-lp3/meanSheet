@@ -64,15 +64,47 @@
               </thead>
               <tbody>
                 <tr ng-repeat="lineItem in dashCtrl.currentTimeSheet.lineItems">
-                  <td>{{lineItem.workItemCode}}</td>
-                  <td>{{lineItem.workItemName}}</td>
-                  <td>{{lineItem.mondayHours}}</td>
-                  <td>{{lineItem.tuesdayHours}}</td>
-                  <td>{{lineItem.wednesdayHours}}</td>
-                  <td>{{lineItem.thursdayHours}}</td>
-                  <td>{{lineItem.fridayHours}}</td>
-                  <td>{{lineItem.saturdayHours}}</td>
-                  <td>{{lineItem.sundayHours}}</td>
+                  <td>
+                    {{lineItem.workItemCode}}
+                  </td>
+                  <td>
+                    {{lineItem.workItemName}}
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" value="{{lineItem.mondayHours}}" style="width: 45px;" maxlength="4">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" value="{{lineItem.tuesdayHours}}" style="width: 45px;" maxlength="4">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" value="{{lineItem.wednesdayHours}}" style="width: 45px;" maxlength="4">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" value="{{lineItem.thursdayHours}}" style="width: 45px;" maxlength="4">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" value="{{lineItem.fridayHours}}" style="width: 45px;" maxlength="4">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" value="{{lineItem.saturdayHours}}" style="width: 45px;" maxlength="4">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" value="{{lineItem.sundayHours}}" style="width: 45px;" maxlength="4">
+                    </div>
+                  </td>
                   <td><button ng-hide="dashCtrl.currentTimeSheet.isSubmitted" class="btn btn-xs btn-default" type="button">Remove</button></td>
                 </tr>
               </tbody>
