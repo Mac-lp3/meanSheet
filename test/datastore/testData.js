@@ -4,6 +4,7 @@ var LineItem = require('../../model/lineItem');
 var User = require('../../model/user');
 var Task = require('../../model/task');
 var Project = require('../../model/project');
+var moment = require('moment');
 
 /* Build test users */
 var user1 = new User();
@@ -83,9 +84,14 @@ const testProjects = [project1, project2, project3];
 const testTasks = [task1, task2, task3];
 
 /* build test time sheets*/
+
+var tempMoment = new moment();
+tempMoment.day('Sunday');
+var sunday = tempMoment.toDate();
+
 var timeSheet1 = new TimeSheet();
 timeSheet1.username = user1.username;
-timeSheet1.sundayDate = new Date();
+timeSheet1.sundayDate = sunday;
 
 var lineItem1 = new LineItem.LineItemModel();
 lineItem1.workItemCode = task2.code;
@@ -113,7 +119,7 @@ timeSheet1.lineItems.push(lineItem2);
 /* build test time sheets */
 var timeSheet2 = new TimeSheet();
 timeSheet2.username = user1.username;
-timeSheet2.sundayDate = new Date();
+timeSheet2.sundayDate = sunday;
 
 var lineItem3 = new LineItem.LineItemModel();
 lineItem3.workItemCode = task1.code;
@@ -127,7 +133,7 @@ lineItem3.fridayHours = 8;
 
 var timeSheet3 = new TimeSheet();
 timeSheet3.username = user1.username;
-timeSheet3.sundayDate = new Date();
+timeSheet3.sundayDate = sunday;
 
 var lineItem4 = new LineItem.LineItemModel();
 lineItem4.workItemCode = task3.code;
