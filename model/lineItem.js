@@ -6,15 +6,15 @@ var Schema = mongoose.Schema;
 var lineItemSchema = new Schema({
   username: { type: String, required: true},
   sundayDate: { type: Date, required: true},
-  workItemCode : {type: String, required: true, unique: true},
+  workItemCode : {type: String, required: true},
   workItemName : {type: String, required: true},
-  mondayHours: {type: Number, min: 0, max: 24, required: true},
-  tuesdayHours: {type: Number, min: 0, max: 24, required: true},
-  wednesdayHours: {type: Number, min: 0, max: 24, required: true},
-  thursdayHours: {type: Number, min: 0, max: 24, required: true},
-  fridayHours: {type: Number, min: 0, max: 24, required: true},
-  saturdayHours: {type: Number, min: 0, max: 24, required: true},
-  sundayHours: {type: Number, min: 0, max: 24, required: true}
+  mondayHours: {type: Number, min: 0, max: 24, required: true, default: 0},
+  tuesdayHours: {type: Number, min: 0, max: 24, required: true, default: 0},
+  wednesdayHours: {type: Number, min: 0, max: 24, required: true, default: 0},
+  thursdayHours: {type: Number, min: 0, max: 24, required: true, default: 0},
+  fridayHours: {type: Number, min: 0, max: 24, required: true, default: 0},
+  saturdayHours: {type: Number, min: 0, max: 24, required: true, default: 0},
+  sundayHours: {type: Number, min: 0, max: 24, required: true, default: 0}
 });
  
 // add total hours method to the schema

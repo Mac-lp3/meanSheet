@@ -85,7 +85,7 @@ const testTasks = [task1, task2, task3];
 
 /* build test time sheets*/
 
-var tempMoment = new moment();
+var tempMoment = new moment('2020-01-01', 'YYYY-MM-DD');
 tempMoment.day('Sunday');
 var sunday = tempMoment.toDate();
 
@@ -95,6 +95,7 @@ timeSheet1.sundayDate = sunday;
 
 var lineItem1 = new LineItem.LineItemModel();
 lineItem1.workItemCode = task2.code;
+lineItem1.workItemName = task2.name;
 lineItem1.username = user1.username;
 lineItem1.sundayDate = timeSheet1.sundayDate;
 lineItem1.mondayHours = 3;
@@ -105,6 +106,7 @@ lineItem1.fridayHours = 8;
 
 var lineItem2 = new LineItem.LineItemModel();
 lineItem2.workItemCode = project1.code;
+lineItem2.workItemName = project1.name;
 lineItem2.username = user1.username;
 lineItem2.sundayDate = timeSheet1.sundayDate;
 lineItem2.mondayHours = 9;
@@ -123,6 +125,7 @@ timeSheet2.sundayDate = sunday;
 
 var lineItem3 = new LineItem.LineItemModel();
 lineItem3.workItemCode = task1.code;
+lineItem3.workItemName = task1.name;
 lineItem3.username = user1.username;
 lineItem3.sundayDate = timeSheet2.sundayDate;
 lineItem3.mondayHours = 3;
@@ -131,12 +134,15 @@ lineItem3.wednesdayHours = 5;
 lineItem3.thursdayHours = 6;
 lineItem3.fridayHours = 8;
 
+timeSheet2.lineItems.push(lineItem3);
+
 var timeSheet3 = new TimeSheet();
 timeSheet3.username = user1.username;
 timeSheet3.sundayDate = sunday;
 
 var lineItem4 = new LineItem.LineItemModel();
 lineItem4.workItemCode = task3.code;
+lineItem4.workItemName = task3.name;
 lineItem4.username = user1.username;
 lineItem4.sundayDate = timeSheet3.sundayDate;
 lineItem4.mondayHours = 3;

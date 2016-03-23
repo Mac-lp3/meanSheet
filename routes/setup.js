@@ -12,12 +12,73 @@ var testData = require('../test/datastore/testData');
 
 /* GET home page. */
 router.get('/workItems', function(req, res, next) {
+
+    var workItemCount = 0;
+
+    // iterate over each project
+    for (i = 0; i < testData.testProjects.length; ++i) {
+
+        // count time sheets by this user for this date
+        Project.count({code: testData.testProjects[i].code}, function (err, count){ 
+
+            workItemCount = count;
+        });
+
+        // none found - save 
+        if (workItemCount == 0) {
+            testData.testProjects[i].save(function (err) {
+                if (err) console.log(err);
+            });
+        }
+    }
+
+    // iterate over each task
+    for (i = 0; i < testData.testTasks.length; ++i) {
+
+        // count time sheets by this user for this date
+        Task.count({code: testData.testTasks[i].code}, function (err, count){ 
+
+            workItemCount = count;
+
+        });
+
+        // none found - save 
+        if (workItemCount == 0) {
+            testData.testTasks[i].save(function (err) {
+                if (err) console.log(err);
+            });
+        }
+    }
     
     res.json([testData.testTasks, testData.testProjects]);
 });
  
 /* GET home page. */
 router.get('/timeSheets', function(req, res, next) {
+
+    var timeSheet = {};
+
+    // iterate over each test user
+    for (i = 0; i < testData.testTimeSheets.length; ++i) {
+
+
+        console.log(testData.testTimeSheets);
+        timeSheet = testData.testTimeSheets[i];
+        console.log(timeSheet);
+
+        // count time sheets by this user for this date
+        TimeSheet.count([{username: timeSheet.username},
+            {sundayDate: timeSheet.sundayDate}], function (err, count){ 
+
+            console.log(timeSheet);
+
+            if (count == 0) {
+                timeSheet.save(function (err) {
+                    if (err) console.log(err);
+                });
+            }
+        });
+    }
     
     res.json(testData.testTimeSheets);
 });
@@ -31,7 +92,7 @@ router.get('/users', function(req, res, next) {
 
         // get a count of users with this user name
         User.count({username: testData.testUsers[i].username}, function (err, count){ 
-            userCount = count 
+            userCount = count;
         });
 
         // none found - save the user
