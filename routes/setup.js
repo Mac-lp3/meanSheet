@@ -1,6 +1,7 @@
 /* grab server stuff */
 var express = require('express');
 var router = express.Router();
+var async = require('async');
 
 /* grab models */
 var TimeSheet = require('../model/timeSheet');
@@ -56,29 +57,32 @@ router.get('/workItems', function(req, res, next) {
 /* GET home page. */
 router.get('/timeSheets', function(req, res, next) {
 
-    var timeSheet = {};
+    var uName = '';
+    var sDate = '';
 
-    // iterate over each test user
-    for (i = 0; i < testData.testTimeSheets.length; ++i) {
+    async.each(testData.testTimeSheets, function(timeSheet, callback) {
 
+        uName = timeSheet.username;
+        sDate = timeSheet.sundayDate;
 
-        console.log(testData.testTimeSheets);
-        timeSheet = testData.testTimeSheets[i];
-        console.log(timeSheet);
+        console.log('got it, right? ' + uName + ', ' + sDate);
 
         // count time sheets by this user for this date
-        TimeSheet.count([{username: timeSheet.username},
-            {sundayDate: timeSheet.sundayDate}], function (err, count){ 
+        TimeSheet.count([{username: uName}, {sundayDate: sDate}], function (err, count){ 
 
-            console.log(timeSheet);
+            console.log('count: ' + count);
 
             if (count == 0) {
+                console.log('saving this guy: ' + uName + ', ' + sDate);
                 timeSheet.save(function (err) {
                     if (err) console.log(err);
                 });
             }
         });
-    }
+
+    }, function (err){
+        if (err) console.log(err);
+    });
     
     res.json(testData.testTimeSheets);
 });

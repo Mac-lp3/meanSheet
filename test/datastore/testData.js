@@ -94,8 +94,8 @@ timeSheet1.username = user1.username;
 timeSheet1.sundayDate = sunday;
 
 var lineItem1 = new LineItem.LineItemModel();
-lineItem1.workItemCode = task2.code;
-lineItem1.workItemName = task2.name;
+lineItem1.workItemCode = task1.code;
+lineItem1.workItemName = task1.name;
 lineItem1.username = user1.username;
 lineItem1.sundayDate = timeSheet1.sundayDate;
 lineItem1.mondayHours = 3;
@@ -120,13 +120,13 @@ timeSheet1.lineItems.push(lineItem2);
 
 /* build test time sheets */
 var timeSheet2 = new TimeSheet();
-timeSheet2.username = user1.username;
+timeSheet2.username = user3.username;
 timeSheet2.sundayDate = sunday;
 
 var lineItem3 = new LineItem.LineItemModel();
 lineItem3.workItemCode = task1.code;
 lineItem3.workItemName = task1.name;
-lineItem3.username = user1.username;
+lineItem3.username = user3.username;
 lineItem3.sundayDate = timeSheet2.sundayDate;
 lineItem3.mondayHours = 3;
 lineItem3.tuesdayHours = 4;
@@ -137,13 +137,13 @@ lineItem3.fridayHours = 8;
 timeSheet2.lineItems.push(lineItem3);
 
 var timeSheet3 = new TimeSheet();
-timeSheet3.username = user1.username;
+timeSheet3.username = user2.username;
 timeSheet3.sundayDate = sunday;
 
 var lineItem4 = new LineItem.LineItemModel();
 lineItem4.workItemCode = task3.code;
 lineItem4.workItemName = task3.name;
-lineItem4.username = user1.username;
+lineItem4.username = user2.username;
 lineItem4.sundayDate = timeSheet3.sundayDate;
 lineItem4.mondayHours = 3;
 lineItem4.tuesdayHours = 4;
