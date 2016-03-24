@@ -14,42 +14,46 @@ var testData = require('../test/datastore/testData');
 /* GET home page. */
 router.get('/workItems', function(req, res, next) {
 
-    var workItemCount = 0;
 
-    // iterate over each project
-    for (i = 0; i < testData.testProjects.length; ++i) {
+    // need to use async
+    async.each(testData.testTasks, function(task, callback) {
 
-        // count time sheets by this user for this date
-        Project.count({code: testData.testProjects[i].code}, function (err, count){ 
+        // count tasks with this code
+        Task.count({code: task.code}, function (err, count){ 
 
-            workItemCount = count;
+            // make sure count is 0
+            if (count == 0) {
+
+                // save this task if so
+                task.save(function (err) {
+                    if (err) console.log(err);
+                });
+            }
         });
 
-        // none found - save 
-        if (workItemCount == 0) {
-            testData.testProjects[i].save(function (err) {
-                if (err) console.log(err);
-            });
-        }
-    }
+    }, function (err){
+        if (err) console.log(err);
+    });
 
-    // iterate over each task
-    for (i = 0; i < testData.testTasks.length; ++i) {
+    // need to use async
+    async.each(testData.testProjects, function(project, callback) {
 
-        // count time sheets by this user for this date
-        Task.count({code: testData.testTasks[i].code}, function (err, count){ 
+        // count tasks with this code
+        Project.count({code: project.code}, function (err, count){ 
 
-            workItemCount = count;
+            // make sure count is 0
+            if (count == 0) {
 
+                // save this task if so
+                project.save(function (err) {
+                    if (err) console.log(err);
+                });
+            }
         });
 
-        // none found - save 
-        if (workItemCount == 0) {
-            testData.testTasks[i].save(function (err) {
-                if (err) console.log(err);
-            });
-        }
-    }
+    }, function (err){
+        if (err) console.log(err);
+    });
     
     res.json([testData.testTasks, testData.testProjects]);
 });
@@ -57,23 +61,17 @@ router.get('/workItems', function(req, res, next) {
 /* GET home page. */
 router.get('/timeSheets', function(req, res, next) {
 
-    var uName = '';
-    var sDate = '';
-
+    // need to use asynch here
     async.each(testData.testTimeSheets, function(timeSheet, callback) {
 
-        uName = timeSheet.username;
-        sDate = timeSheet.sundayDate;
-
-        console.log('got it, right? ' + uName + ', ' + sDate);
-
         // count time sheets by this user for this date
-        TimeSheet.count([{username: uName}, {sundayDate: sDate}], function (err, count){ 
+        TimeSheet.count({ $and: [{username: timeSheet.username}, 
+            {sundayDate: timeSheet.sundayDate}]}, function (err, count){ 
 
-            console.log('count: ' + count);
+            // make sure no time sheets by this user for this date exist
+            if (count == 0) {  
 
-            if (count == 0) {
-                console.log('saving this guy: ' + uName + ', ' + sDate);
+                // save if not
                 timeSheet.save(function (err) {
                     if (err) console.log(err);
                 });
@@ -89,23 +87,26 @@ router.get('/timeSheets', function(req, res, next) {
  
 router.get('/users', function(req, res, next) {
 
-    var userCount = 0;
+    // need to use async
+    async.each(testData.testUsers, function(user, callback) {
 
-    // iterate over each test user
-    for (i = 0; i < testData.testUsers.length; ++i) {
+        // count users with this user name
+        User.count({username: user.username}, function (err, count){ 
 
-        // get a count of users with this user name
-        User.count({username: testData.testUsers[i].username}, function (err, count){ 
-            userCount = count;
+            // make sure count is 0
+            if (count == 0) {
+
+                // save this user if so
+                user.save(function (err) {
+                    if (err) console.log(err);
+                });
+            }
+
         });
 
-        // none found - save the user
-        if (userCount == 0) {
-            testData.testUsers[i].save(function (err) {
-                if (err) console.log(err);
-            });
-        }
-    }
+    }, function (err){
+        if (err) console.log(err);
+    });
     
     // Return A-OKAY, not data
     res.json(testData.testUsers);
