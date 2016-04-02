@@ -34,8 +34,9 @@
           <form class="form-inline">
               <div class="form-group">
                 <label for="exampleInputEmail1">Select Date</label>
-                <input type="text" class="form-control" id="datepicker" style="position: relative; z-index:100;">
+                <input type="text" ng-model="dashCtrl.datePickerInput" class="form-control" id="datepicker" style="position: relative; z-index:100;">
             </div>
+            <button type="button" class="btn btn-primary" ng-click="dashCtrl.dateChange()">Update</button>
           </form> 
         </div>
         <!-- h2 class="sub-header"></h2 -->
@@ -114,8 +115,8 @@
         </div>
         <div class="col-md-6">
           <button class="btn btn-success pull-right" type="button">Submit</button>
-          <button class="btn btn-default pull-right" type="button">Reset</button>
           <button class="btn btn-primary pull-right" type="button">Save</button>
+          <button class="btn btn-default pull-right" type="button">Reset</button>
         </div>
 
       </div>

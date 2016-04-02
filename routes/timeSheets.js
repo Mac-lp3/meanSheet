@@ -48,9 +48,12 @@ router.get('/:dateString', function(req, res, next) {
             if (!timeSheet) {
 
               // create a new one if not
-              timeSheet = testData.testTimeSheets[0];
+              timeSheet = new TimeSheet();
+              timeSheet.username = 'Jmoney';
+              timeSheet.sundayDate = inputDate.toDate();
             }
 
+            // return 
             res.json(timeSheet);
           }
       });

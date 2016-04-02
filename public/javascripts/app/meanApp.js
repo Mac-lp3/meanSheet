@@ -11,75 +11,75 @@ meanApp.controller('DashboardController', function($http) {
 	];
    
 	var self = this;
-   	self.currentTimeSheet = {};
+  self.currentTimeSheet = {};
+  self.datePickerInput = '';
 
-   	/* update variables on date change action */
-   	self.dateChange = function (dateInput) {
+ 	/* update variables on date change action */
+ 	self.dateChange = function () {
 
-   		// build query param from new date
-   		var parts = dateInput.split('-');
+ 		// build query param from new date
+ 		var parts = self.datePickerInput.split('-');
 
-  		// new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-  		internalDate = new Date(parts[0], parts[1]-1, parts[2]); 
-		dd = parts[2];
-		mm = parts[1]-1; //January is 0!
-		yyyy = parts[0];
+    dd = parts[2];
+    mm = parts[1]-1; //January is 0!
+    yyyy = parts[0];
+  
+    /* update readable date and get the new time sheet */
+    self.readableDate = monthNames[mm] + ' ' + dd + ' ' + yyyy
+    self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
+    self.datePickerInput = '';
+ 	};
 
-		/* update readable date and get the new time sheet */
-		self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy
-		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-   	};
+ 	self.getPreviousTimeSheet = function () {
+ 		
+ 		// get current date and subtract 7 days
+ 		var tempDate = new Date(self.currentTimeSheet.sundayDate);
+ 		tempDate.setDate(tempDate.getDate() - 7);
 
-   	self.getPreviousTimeSheet = function () {
-   		
-   		// get current date and subtract 7 days
-   		var tempDate = new Date(self.currentTimeSheet.sundayDate);
-   		tempDate.setDate(tempDate.getDate() - 7);
+ 		// build query string
+ 		var dd = tempDate.getDate();
+    var mm = tempDate.getMonth()+1; //January is 0!
+    var yyyy = tempDate.getFullYear();
 
-   		// build query string
-   		var dd = tempDate.getDate();
-		var mm = tempDate.getMonth()+1; //January is 0!
-		var yyyy = tempDate.getFullYear();
+    // get new time sheet and update readable date
+    self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+ 		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
+ 	};
 
-		// get new time sheet and update readable date
-		self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
-   		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-   	};
+ 	self.getNextTimeSheet = function () {
+ 		
+ 		// get current date and add 7 days
+    var tempDate = new Date(self.currentTimeSheet.sundayDate);
+ 		tempDate.setDate(tempDate.getDate() + 7);
 
-   	self.getNextTimeSheet = function () {
-   		
-   		// get current date and add 7 days
-   		var tempDate = new Date(self.currentTimeSheet.sundayDate);
-   		tempDate.setDate(tempDate.getDate() + 7);
+ 		// build query string
+    var dd = tempDate.getDate();
+    var mm = tempDate.getMonth()+1; //January is 0!
+    var yyyy = tempDate.getFullYear()
 
-   		// build query string
-   		var dd = tempDate.getDate();
-		var mm = tempDate.getMonth()+1; //January is 0!
-		var yyyy = tempDate.getFullYear();
+    // get new time sheet and update readable date
+    self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+ 		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
+ 	};
 
-		// get new time sheet and update readable date
-		self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
-   		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-   	};
+ 	/* helper method for the http call to time sheets */
+ 	self.getTimeSheet = function (dateString) {
+	$http({
+   		method : 'get',
+   		url : '/timeSheets/' + dateString
+   	}).then(function success(response){
+   		self.currentTimeSheet = response.data;
+   	});
+ 	};
 
-   	/* helper method for the http call to time sheets */
-   	self.getTimeSheet = function (dateString) {
-		$http({
-	   		method : 'get',
-	   		url : '/timeSheets/' + dateString
-	   	}).then(function success(response){
-	   		self.currentTimeSheet = response.data;
-	   	});
-   	};
+ 	/* build initial date string */
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+  self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
 
-   	/* build initial date string */
-    var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth()+1; //January is 0!
-	var yyyy = today.getFullYear();
-	self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
-
-	/* get today's time sheet */
-   	self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
+  /* get today's time sheet */
+  self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
    
 });
