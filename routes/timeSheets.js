@@ -1,7 +1,9 @@
 var express = require('express');
 var testData = require('../test/datastore/testData');
 var LineItem = require('../model/lineItem');
+var TimeSheet = require('../model/timeSheet');
 var moment = require('moment');
+var async = require('async');
 var router = express.Router();
 
 
@@ -15,26 +17,40 @@ router.get('/', function(req, res, next) {
 /* Get single time sheet by date. */
 router.get('/:dateString', function(req, res, next) {
 
-    // Get the date path variable
-    var isoDate = req.params.dateString;
+    var foundTimeSheet = {};
 
-    console.log('fetching time sheet for: ' + isoDate);
+    // Get the date path variable
+    var dateString = req.params.dateString;
+
+    console.log('fetching time sheet for: ' + dateString);
 
     // Parse date and check validity
-    var providedDate = moment(isoDate, 'YYYY-MM-DD');
-    if (providedDate != null && providedDate.isValid()) {
+    var inputDate = moment(dateString, 'YYYY-MM-DD');
+    if (inputDate != null && inputDate.isValid()) {
 
       // valid - search DB by username and sundayDate
+      inputDate.day('Sunday');
 
-      // Time sheets saved based on sunday date
-      providedDate.day('Sunday');
+      // static query to test
+      TimeSheet.findOne({'username' : 'Jmoney', 'sundayDate' : inputDate.toDate()}, 
+        function(err, timeSheet) {
+          if (err)
+            console.log(err);
+          else 
+            foundTimeSheet = timeSheet;
+            console.log('alrightalrightalright....');
+            console.log(timeSheet);
+            console.log(foundTimeSheet);
+      });
+
+      // create current time sheet if not found
+      if (!foundTimeSheet) {
+        foundTimeSheet = testData.testTimeSheets[0];
+      }
       
-      // TODO query mongoose
-
-      // create new if not found
-      var timeSheet = testData.testTimeSheets[0];
-
-      res.json(timeSheet);
+      console.log('ok one more time.....');
+      console.log(foundTimeSheet);
+      res.json(foundTimeSheet);
     
     } else {
 
