@@ -17,8 +17,6 @@ router.get('/', function(req, res, next) {
 /* Get single time sheet by date. */
 router.get('/:dateString', function(req, res, next) {
 
-    var foundTimeSheet = {};
-
     // Get the date path variable
     var dateString = req.params.dateString;
 
@@ -28,36 +26,41 @@ router.get('/:dateString', function(req, res, next) {
     var inputDate = moment(dateString, 'YYYY-MM-DD');
     if (inputDate != null && inputDate.isValid()) {
 
-      // valid - search DB by username and sundayDate
       inputDate.day('Sunday');
 
       // static query to test
       TimeSheet.findOne({'username' : 'Jmoney', 'sundayDate' : inputDate.toDate()}, 
         function(err, timeSheet) {
-          if (err)
+
+          if (err) {
+            // something went wrong. log it
             console.log(err);
-          else 
-            foundTimeSheet = timeSheet;
-            console.log('alrightalrightalright....');
-            console.log(timeSheet);
-            console.log(foundTimeSheet);
+
+            // redirect to error page
+            res.render('error', {
+              message: 'mongoose fucked up',
+              error: 'idk'
+            });
+
+          } else {
+
+            // check if time sheet exists
+            if (!timeSheet) {
+
+              // create a new one if not
+              timeSheet = testData.testTimeSheets[0];
+            }
+
+            res.json(timeSheet);
+          }
       });
 
-      // create current time sheet if not found
-      if (!foundTimeSheet) {
-        foundTimeSheet = testData.testTimeSheets[0];
-      }
-      
-      console.log('ok one more time.....');
-      console.log(foundTimeSheet);
-      res.json(foundTimeSheet);
-    
     } else {
 
       // invalid format - send to not found
       res.render('error', {
-        message: 'Not a proper date, bud',
-        error: 'idk'
+          message: 'you fucked up',
+          error: 'idk'
       });
     }
 });
