@@ -83,3 +83,20 @@ meanApp.controller('DashboardController', function($http) {
   self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
    
 });
+
+meanApp.controller('WorkItemModalController', function($http) {
+
+  var self = this;
+  self.queryString = '';
+  self.taskList = [];
+  self.projectList = [];
+
+  self.searchWorkItems = function () {
+
+    // dont bother for empty strings
+    if (self.queryString) {
+
+    }
+  };
+
+});

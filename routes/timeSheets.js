@@ -6,7 +6,6 @@ var moment = require('moment');
 var async = require('async');
 var router = express.Router();
 
-
 /* GET timeSheets page. */
 router.get('/', function(req, res, next) {
 
