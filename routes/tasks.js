@@ -19,14 +19,15 @@ router.get('/', function(req, res, next) {
 	    
 	    Task.find({ $or : [{code : myRe}, {author : myRe}, {creator : myRe}, {description : myRe}] }, 
 	    	function (err, tasks){
+	    		// TODO what do???
+	        	if (err)
+	            	console.log(err);
 
-	        if (err)
-	            console.log(err);
-
-	        console.log('looking for: ' + myRe);
-	        res.json(tasks);
-	    });
-
+	            // TODO how log??
+	        	console.log('looking for: ' + myRe);
+	        	res.json(tasks);
+	    	}
+	    );
     } else {
 
     	console.log('grabbing all tasks...');
@@ -36,6 +37,7 @@ router.get('/', function(req, res, next) {
     		{},
     		function(err, tasks){
 
+    			// TODO what do??
     			if (err)
     				console.log('err');
 
@@ -43,10 +45,9 @@ router.get('/', function(req, res, next) {
     		}
     	).limit(25);
     }
-    //TODO what about when no params sent? just get everything? some subset?
 });
 
-/* get work items page. */
+/* individual task. */
 router.get('/:taskCode', function(req, res, next) {
 
 	var taskCode = req.params.taskCode;
