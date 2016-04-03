@@ -100,6 +100,8 @@ meanApp.controller('WorkItemModalController', function($http) {
         });
     }
 
+    initializeProjects();
+
     function initializeTasks() {
       $http({
           method : 'get',
@@ -108,6 +110,8 @@ meanApp.controller('WorkItemModalController', function($http) {
           self.taskList = response.data;
         });
     }
+
+    initializeTasks();
 
     self.searchWorkItems = function () {
 

@@ -1,0 +1,65 @@
+<div id="workItemModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" ng-controller="WorkItemModalController as modalCtrl">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+        <h4 class="modal-title" style="text-align:left;float:left;">Work Items</h4>
+        <form class="form-inline">
+          <input class="form-control input-sm" type="text" placeholder="Search..."/>
+        </form>
+      </div>
+
+      <div class="modal-body">
+        
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a data-toggle="tab" href="#taskTab">Tasks</a></li>
+          <li role="presentation"><a data-toggle="tab" href="#projectTab">Projects</a></li>
+        </ul>
+
+        <div class="tab-content">
+
+          <div id="taskTab" class="tab-pane active">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+                <tr ng-repeat="task in modalCtrl.taskList">
+                  <td>{{task.code}}</td>
+                  <td>{{task.description}}</td>
+                  <td>Add</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div id="projectTab" class="tab-pane">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+                <tr ng-repeat="project in modalCtrl.projectList">
+                  <td>{{project.code}}</td>
+                  <td>{{project.description}}</td>
+                  <td>Add</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
