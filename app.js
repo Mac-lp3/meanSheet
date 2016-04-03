@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var timeSheets = require('./routes/timeSheets');
 var users = require('./routes/users');
+var tasks = require('./routes/tasks');
 var setup = require('./routes/setup');
 
 var app = express();
@@ -30,6 +31,7 @@ app.use('/', routes);
 app.use('/setup', setup);
 app.use('/timeSheets', timeSheets);
 app.use('/users', users);
+app.use('/tasks', tasks);
 
 mongoose.connect('mongodb://localhost/mean-dev');
 
