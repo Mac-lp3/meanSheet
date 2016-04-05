@@ -13,6 +13,10 @@ meanApp.controller('DashboardController', function($http) {
   	var self = this;
     self.currentTimeSheet = {};
     self.datePickerInput = '';
+    self.currentDateUrlString = '';
+    self.TASK_WORK_ITEM_TYPE = 'Task';
+    self.PROJECT_WORK_ITEM_TYPE = 'Project';
+    self.LEAVE_WORK_ITEM_TYPE = 'Leave';
 
    	/* update variables on date change action */
    	self.dateChange = function () {
@@ -68,6 +72,7 @@ meanApp.controller('DashboardController', function($http) {
      		method : 'get',
      		url : '/timeSheets/' + dateString
      	}).then(function success(response){
+        self.currentDateUrlString = dateString;
      		self.currentTimeSheet = response.data;
      	});
    	};
@@ -75,7 +80,9 @@ meanApp.controller('DashboardController', function($http) {
     self.addLineItem = function(workItemType, workItemCode){
 
       if (workItemType) {
-        if (workItemType == 'Task') {
+
+        // check what type of work item this line item represents
+        if (workItemType == self.TASK_WORK_ITEM_TYPE) {
           
           // make sure it's not already on the line item list.
           for (var i = 0; i < self.currentTimeSheet.lineItems.length; i++){
@@ -84,11 +91,10 @@ meanApp.controller('DashboardController', function($http) {
             }
           }
 
-          self.currentTimeSheet
           // if not, then get it from data store
           $http({
             method : 'post',
-            url : '/timeSheets/' + dateString + '/lineItems/' + workItemCode
+            url : '/timeSheets/' + self.currentDateUrlString + '/lineItems/' + workItemCode
           }).then(function success(response){
             self.currentTimeSheet = response.data;
           });  
@@ -96,11 +102,11 @@ meanApp.controller('DashboardController', function($http) {
           // TODO remove it from modal...
         }
 
-        if (workItemType == 'Project') {
+        if (workItemType == self.PROJECT_WORK_ITEM_TYPE) {
 
         }
 
-        if (workItemType == 'Leave') {
+        if (workItemType == self.LEAVE_WORK_ITEM_TYPE) {
 
         }
       }

@@ -36,7 +36,7 @@
                 <tr ng-repeat="task in modalCtrl.taskList">
                   <td>{{task.code}}</td>
                   <td>{{task.description}}</td>
-                  <td><button class="btn btn-xs btn-primary" ng-click="">Add</button></td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(dashCtrl.TASK_WORK_ITEM_TYPE, task.code)">Add</button></td>
                 </tr>
               </table>
             </div>

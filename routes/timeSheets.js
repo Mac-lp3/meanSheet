@@ -61,8 +61,8 @@ router.get('/:dateString', function(req, res, next) {
 
       // invalid format - send to not found
       res.render('error', {
-          message: 'you fucked up',
-          error: 'idk'
+          message: 'you done fucked up',
+          error: 'lol idk'
       });
     }
 });
