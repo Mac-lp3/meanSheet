@@ -20,9 +20,10 @@
         <ul class="nav nav-tabs">
           <li role="presentation" class="active"><a data-toggle="tab" href="#taskTab">Tasks</a></li>
           <li role="presentation"><a data-toggle="tab" href="#projectTab">Projects</a></li>
+          <li role="presentation"><a data-toggle="tab" href="#timeOffTab">Time Off</a></li>
         </ul>
 
-        <div class="tab-content">
+        <div class="tab-content" ng-controller="DashboardController as dashCtrl">
 
           <div id="taskTab" class="tab-pane active">
             <div class="table-responsive">
@@ -35,7 +36,7 @@
                 <tr ng-repeat="task in modalCtrl.taskList">
                   <td>{{task.code}}</td>
                   <td>{{task.description}}</td>
-                  <td>Add</td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="">Add</button></td>
                 </tr>
               </table>
             </div>
@@ -52,6 +53,28 @@
                 <tr ng-repeat="project in modalCtrl.projectList">
                   <td>{{project.code}}</td>
                   <td>{{project.description}}</td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="">Add</button></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div id="timeOffTab" class="tab-pane">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>Sick Leave</td>
+                  <td>The flu? Hung over?</td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="">Add</button></td>
+                </tr>
+                <tr>
+                  <td>Vacation</td>
+                  <td>I see London, I see France</td>
                   <td>Add</td>
                 </tr>
               </table>

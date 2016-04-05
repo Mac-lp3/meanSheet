@@ -64,13 +64,47 @@ meanApp.controller('DashboardController', function($http) {
 
    	/* helper method for the http call to time sheets */
    	self.getTimeSheet = function (dateString) {
-  	$http({
+      $http({
      		method : 'get',
      		url : '/timeSheets/' + dateString
      	}).then(function success(response){
      		self.currentTimeSheet = response.data;
      	});
    	};
+
+    self.addLineItem = function(workItemType, workItemCode){
+
+      if (workItemType) {
+        if (workItemType == 'Task') {
+          
+          // make sure it's not already on the line item list.
+          for (var i = 0; i < self.currentTimeSheet.lineItems.length; i++){
+            if (self.currentTimeSheet.lineItems[i].code == workItemCode) {
+              // already on time sheet.
+            }
+          }
+
+          self.currentTimeSheet
+          // if not, then get it from data store
+          $http({
+            method : 'post',
+            url : '/timeSheets/' + dateString + '/lineItems/' + workItemCode
+          }).then(function success(response){
+            self.currentTimeSheet = response.data;
+          });  
+          // add it to line items.
+          // TODO remove it from modal...
+        }
+
+        if (workItemType == 'Project') {
+
+        }
+
+        if (workItemType == 'Leave') {
+
+        }
+      }
+    };
 
    	/* build initial date string */
     var today = new Date();
