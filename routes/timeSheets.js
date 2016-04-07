@@ -1,6 +1,8 @@
 var express = require('express');
 var testData = require('../test/datastore/testData');
 var LineItem = require('../model/lineItem');
+var Task = require('../model/task');
+var Project = require('../model/project');
 var TimeSheet = require('../model/timeSheet');
 var moment = require('moment');
 var async = require('async');
@@ -81,11 +83,56 @@ router.delete('/:dateString/lineItems/:workItemCode', function(req, res, next){
 });
 
 /* add new line item to time sheet */
-router.post('/:dateString/lineItems/:workItemCode', function(req, res, next){
+router.post('/:dateString/lineItems', function(req, res, next){
 
   // Get the date path variable
   var isoDate = req.params.dateString;
-  var workItemCode = req.params.workItemCode;
+  var workItemType = req.body.workItemType;
+  var workItemCode = req.body.workItemCode;
+
+  if (workItemType) {
+
+    if (workItemType == 'Task') {
+
+        Task.findOne({code : workItemCode}, function(err, task) {
+
+        if (err) {
+
+          // something went wrong. log it
+          console.log(err);
+
+          // What do??
+          res.json({
+            message: 'mongoose fucked up',
+            error: 'idk'
+          });
+
+        } else {
+
+          // check if time sheet exists
+          if (task) {
+
+            var lineItem = new LineItem.LineItemModel();
+            lineItem.workItemCode = task.code;
+            lineItem.workItemType = 'Task';
+            lineItem.username = 'Jmoney';
+
+            var sundayDate = moment(isoDate, 'YYYY-MM-DD');
+            lineItem.sundayDate = sundayDate.toDate();
+
+            res.json(lineItem);
+          }
+          // TODO return a 404 or something
+        }
+      });
+    }
+    if (workItemType == 'Project') {
+
+    }
+    if (workItemType == 'Leave') {
+
+    }
+  }
 
   // TODO get time sheet and transfer values.
   var lineItem = new LineItem.LineItemModel();

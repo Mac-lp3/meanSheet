@@ -7,6 +7,7 @@ var lineItemSchema = new Schema({
   username: { type: String, required: true},
   sundayDate: { type: Date, required: true},
   workItemCode : {type: String, required: true},
+  workItemType : {type: String, required: true},
   workItemName : {type: String, required: true},
   mondayHours: {type: Number, min: 0, max: 24, required: true, default: 0},
   tuesdayHours: {type: Number, min: 0, max: 24, required: true, default: 0},

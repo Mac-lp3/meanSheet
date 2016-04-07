@@ -94,9 +94,10 @@ meanApp.controller('DashboardController', function($http) {
           // if not, then get it from data store
           $http({
             method : 'post',
-            url : '/timeSheets/' + self.currentDateUrlString + '/lineItems/' + workItemCode
+            url : '/timeSheets/' + self.currentDateUrlString + '/lineItems/',
+            data : {'workItemType' : self.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode}
           }).then(function success(response){
-            self.currentTimeSheet = response.data;
+            self.currentTimeSheet.lineItems.push(response.data);
           });  
           // add it to line items.
           // TODO remove it from modal...
