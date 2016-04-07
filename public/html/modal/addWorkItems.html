@@ -53,7 +53,7 @@
                 <tr ng-repeat="project in modalCtrl.projectList">
                   <td>{{project.code}}</td>
                   <td>{{project.description}}</td>
-                  <td><button class="btn btn-xs btn-primary" ng-click="">Add</button></td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(dashCtrl.PROJECT_WORK_ITEM_TYPE, project.code); modalCtrl.removeWorkItemFromList(dashCtrl.PROJECT_WORK_ITEM_TYPE, project.code)">Add</button></td>
                 </tr>
               </table>
             </div>
@@ -75,7 +75,7 @@
                 <tr>
                   <td>Vacation</td>
                   <td>I see London, I see France</td>
-                  <td>Add</td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="">Add</button></td>
                 </tr>
               </table>
             </div>

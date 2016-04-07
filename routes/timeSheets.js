@@ -90,45 +90,44 @@ router.post('/:dateString/lineItems', function(req, res, next){
   var workItemType = req.body.workItemType;
   var workItemCode = req.body.workItemCode;
 
-  if (workItemType) {
+  var theCallBack = function (err, theWorkItem) {
 
-    if (workItemType == 'Task') {
-
-        Task.findOne({code : workItemCode}, function(err, task) {
-
-        if (err) {
+      if (err) {
 
           // something went wrong. log it
           console.log(err);
-
           // What do??
-          res.json({
+          this.res.json({
             message: 'mongoose fucked up',
             error: 'idk'
           });
-
         } else {
 
           // check if time sheet exists
-          if (task) {
+          if (theWorkItem) {
 
             var lineItem = new LineItem.LineItemModel();
-            lineItem.workItemCode = task.code;
-            lineItem.workItemName = task.name;
-            lineItem.workItemType = 'Task';
+            lineItem.workItemCode = theWorkItem.code;
+            lineItem.workItemName = theWorkItem.name;
+            lineItem.workItemType = this.workItemType;
             lineItem.username = 'Jmoney';
 
             var sundayDate = moment(isoDate, 'YYYY-MM-DD');
             lineItem.sundayDate = sundayDate.toDate();
 
-            res.json(lineItem);
+            this.res.json(lineItem);
           }
           // TODO return a 404 or something
         }
-      });
+    };
+
+  if (workItemType) {
+
+    if (workItemType == 'Task') {
+      Task.findOne({code : workItemCode}, theCallBack.bind({ 'res' : res, 'workItemType' : workItemType}));
     }
     if (workItemType == 'Project') {
-
+      Project.findOne({code : workItemCode}, theCallBack.bind({ 'res' : res, 'workItemType' : workItemType}));
     }
     if (workItemType == 'Leave') {
 

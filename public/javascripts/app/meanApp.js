@@ -81,34 +81,42 @@ meanApp.controller('DashboardController', function($http) {
 
       if (workItemType) {
 
-        // check what type of work item this line item represents
-        if (workItemType == self.TASK_WORK_ITEM_TYPE) {
-          
-          // make sure it's not already on the line item list.
-          for (var i = 0; i < self.currentTimeSheet.lineItems.length; i++){
-            if (self.currentTimeSheet.lineItems[i].code == workItemCode) {
-              // already on time sheet.
-            }
+        // make sure it's not already on the line item list.
+        var skip = false;
+        for (var i = 0; i < self.currentTimeSheet.lineItems.length; i++){
+          if (self.currentTimeSheet.lineItems[i].code == workItemCode) {
+            var skip = true;
+            break;
+          }
+        }
+
+        // if it is not, then get it from data store
+        if (!skip) {
+
+          // construct the form to post
+          var theData = {};
+
+          // need to check what type of work item this code is for represents
+          if (workItemType == self.TASK_WORK_ITEM_TYPE) {
+            theData = {'workItemType' : self.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
           }
 
-          // if not, then get it from data store
+          if (workItemType == self.PROJECT_WORK_ITEM_TYPE) {
+            theData = {'workItemType' : self.PROJECT_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+          }
+
+          if (workItemType == self.LEAVE_WORK_ITEM_TYPE) {
+            theData = {'workItemType' : self.LEAVE_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+          }
+
+          // go get it
           $http({
             method : 'post',
             url : '/timeSheets/' + self.currentDateUrlString + '/lineItems/',
-            data : {'workItemType' : self.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode}
+            data : theData
           }).then(function success(response){
             self.currentTimeSheet.lineItems.push(response.data);
-          });  
-          // add it to line items.
-          // TODO remove it from modal...
-        }
-
-        if (workItemType == self.PROJECT_WORK_ITEM_TYPE) {
-
-        }
-
-        if (workItemType == self.LEAVE_WORK_ITEM_TYPE) {
-
+          });
         }
       }
     };
@@ -184,7 +192,6 @@ meanApp.controller('WorkItemModalController', function($http) {
       if (workItemType == 'Task') {
         
         self.addedTasks.push(workItemCode);
-        
         for(var i = 0; i < self.taskList.length; i++){
           if (self.taskList[i].code == workItemCode){
             self.taskList.splice(i, 1);
@@ -194,6 +201,7 @@ meanApp.controller('WorkItemModalController', function($http) {
       }
 
       if(workItemType == 'Project'){
+
         self.addedProjects.push(workItemCode);
         for(var i = 0; i < self.projectList.length; i++){
           if (self.projectList[i].code == workItemCode){
@@ -204,6 +212,7 @@ meanApp.controller('WorkItemModalController', function($http) {
       }
 
       if (workItemType == 'Leave') {
+
         self.addedLeave.push(workItemCode);
         for(var i = 0; i < self.leaveList.length; i++){
           if (self.leaveList[i].code == workItemCode){
