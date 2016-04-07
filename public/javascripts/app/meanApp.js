@@ -130,7 +130,10 @@ meanApp.controller('WorkItemModalController', function($http) {
     var self = this;
     self.queryString = '';
     self.taskList = [];
+    self.addedTasks = [];
     self.projectList = [];
+    self.addedProjects = [];
+    self.addedLeave = [];
 
     function initializeProjects() {
       $http({
@@ -178,7 +181,37 @@ meanApp.controller('WorkItemModalController', function($http) {
     }
 
     self.removeWorkItemFromList = function(workItemType, workItemCode) {
+      if (workItemType == 'Task') {
+        
+        self.addedTasks.push(workItemCode);
+        
+        for(var i = 0; i < self.taskList.length; i++){
+          if (self.taskList[i].code == workItemCode){
+            self.taskList.splice(i, 1);
+            break;
+          }
+        }
+      }
 
+      if(workItemType == 'Project'){
+        self.addedProjects.push(workItemCode);
+        for(var i = 0; i < self.projectList.length; i++){
+          if (self.projectList[i].code == workItemCode){
+            self.projectList.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      if (workItemType == 'Leave') {
+        self.addedLeave.push(workItemCode);
+        for(var i = 0; i < self.leaveList.length; i++){
+          if (self.leaveList[i].code == workItemCode){
+            self.leaveList.splice(i, 1);
+            break;
+          }
+        }
+      }
     }
 
 });
