@@ -114,6 +114,7 @@ router.post('/:dateString/lineItems', function(req, res, next){
 
             var lineItem = new LineItem.LineItemModel();
             lineItem.workItemCode = task.code;
+            lineItem.workItemName = task.name;
             lineItem.workItemType = 'Task';
             lineItem.username = 'Jmoney';
 

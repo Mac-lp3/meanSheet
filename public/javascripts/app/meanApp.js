@@ -176,4 +176,9 @@ meanApp.controller('WorkItemModalController', function($http) {
         });
       };
     }
+
+    self.removeWorkItemFromList = function(workItemType, workItemCode) {
+
+    }
+
 });
