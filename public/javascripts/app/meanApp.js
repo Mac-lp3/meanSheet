@@ -1,6 +1,108 @@
 var meanApp = angular.module('meanApp', []);
 
-meanApp.controller('DashboardController', function($http) {
+meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScope, $http) {
+
+    var self = this;
+    self.addedTasks = [];
+    self.addedProjects = [];
+    self.addedLeave = [];
+    self.projectList = [];
+    self.taskList = [];
+
+    self.initializeProjects = function() {
+      return $http({
+          method : 'get',
+          url : '/projects'
+        }).then(function success(response){
+          self.projectList = response.data;
+          return self.projectList;
+        });
+    }
+
+    self.initializeTasks = function() {
+      return $http({
+          method : 'get',
+          url : '/tasks'
+        }).then(function success(response){
+          self.taskList = response.data;
+          return self.taskList;
+        });
+    }
+
+    self.searchTasks = function (queryString) {
+
+      // dont bother for empty strings
+      if (queryString) {
+        return $http({
+          method : 'get',
+          url : '/tasks?q=' + queryString
+        }).then(function success(response){
+          self.taskList = response.data;
+          return self.taskList;
+        });
+      };
+    }
+
+    self.searchProjects = function (queryString) {
+
+      // dont bother for empty strings
+      if (queryString) {
+        return $http({
+          method : 'get',
+          url : '/projects?q=' + queryString
+        }).then(function success(response){
+          self.projectList = response.data;
+          return self.projectList;
+        });
+      };
+    }
+
+    self.isAlreadyOnTimeSheet = function(timeSheet, workItemType, workItemCode) {
+      
+      var isAlready = false;
+
+      for (var i = 0; i < timeSheet.lineItems.length; i++){
+          if (timeSheet.lineItems[i].code == workItemCode) {
+            isAlready = true;
+            break;
+          }
+      }
+
+      return isAlready;
+    }
+
+    self.removeTaskFromModalList = function(workItemCode) {
+
+        for(var i = 0; i < self.taskList.length; i++){
+          if (self.taskList[i].code == workItemCode){
+            self.taskList.splice(i, 1);
+            break;
+          }
+        }
+
+        return self.taskList;
+    }
+
+    self.removeProjectFromModalList = function(workItemCode) {
+
+        for(var i = 0; i < self.projectList.length; i++){
+          if (self.projectList[i].code == workItemCode){
+            self.projectList.splice(i, 1);
+            break;
+          }
+        }
+
+        return self.projectList;
+    }
+}]);
+
+meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '$scope', '$http', 
+  function(addWorkItemService, $rootScope, $scope, $http) {
+
+    /* PUT AS LITTLE AS POSSIBLE IN ROOT SCOPE */
+    $rootScope.TASK_WORK_ITEM_TYPE = 'Task';
+    $rootScope.PROJECT_WORK_ITEM_TYPE = 'Project';
+    $rootScope.LEAVE_WORK_ITEM_TYPE = 'Leave';
 
   	/* used to construct a readable date string */
   	const monthNames = [
@@ -9,14 +111,15 @@ meanApp.controller('DashboardController', function($http) {
     		"Aug", "September", "Oct",
     		"Nov", "Dec"
   	];
-     
+
+    $scope.currentTimeSheet = {};
+    $scope.currentDateUrlString = {};
+    $scope.queryString = '';
+    addWorkItemService.initializeProjects().then(function(obj){ $scope.modalProjectList = obj;});
+    addWorkItemService.initializeTasks().then(function(obj){ $scope.modalTaskList = obj;});
+    
   	var self = this;
-    self.currentTimeSheet = {};
     self.datePickerInput = '';
-    self.currentDateUrlString = '';
-    self.TASK_WORK_ITEM_TYPE = 'Task';
-    self.PROJECT_WORK_ITEM_TYPE = 'Project';
-    self.LEAVE_WORK_ITEM_TYPE = 'Leave';
 
    	/* update variables on date change action */
    	self.dateChange = function () {
@@ -29,7 +132,7 @@ meanApp.controller('DashboardController', function($http) {
       yyyy = parts[0];
     
       /* update readable date and get the new time sheet */
-      self.readableDate = monthNames[mm] + ' ' + dd + ' ' + yyyy
+      $scope.readableDate = monthNames[mm] + ' ' + dd + ' ' + yyyy
       self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
       self.datePickerInput = '';
    	};
@@ -72,51 +175,73 @@ meanApp.controller('DashboardController', function($http) {
      		method : 'get',
      		url : '/timeSheets/' + dateString
      	}).then(function success(response){
-        self.currentDateUrlString = dateString;
-     		self.currentTimeSheet = response.data;
+        $scope.currentDateUrlString = dateString;
+     		$scope.currentTimeSheet = response.data;
      	});
    	};
+
+    self.searchWorkItems = function () {
+      $scope.modalTaskList = addWorkItemService.searchTasks($scope.queryString);
+      $scope.modalProjectList = addWorkItemService.searchProjects($scope.queryString);
+    }
 
     self.addLineItem = function(workItemType, workItemCode){
 
       if (workItemType) {
 
-        // make sure it's not already on the line item list.
-        var skip = false;
-        for (var i = 0; i < self.currentTimeSheet.lineItems.length; i++){
-          if (self.currentTimeSheet.lineItems[i].code == workItemCode) {
-            var skip = true;
-            break;
-          }
-        }
+        // Check if it's already on the time sheet
+        var skip = addWorkItemService.isAlreadyOnTimeSheet($scope.currentTimeSheet, workItemType, workItemCode);
 
-        // if it is not, then get it from data store
+        // If not, then work item data
         if (!skip) {
 
-          // construct the form to post
-          var theData = {};
+          var formToPost = {};
+          var cleanUpFunction = {};
 
-          // need to check what type of work item this code is for represents
-          if (workItemType == self.TASK_WORK_ITEM_TYPE) {
-            theData = {'workItemType' : self.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+          // Build formToPost based on work item type
+          if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
+            formToPost = {'workItemType' : $rootScope.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+            cleanUpFunction = addWorkItemService.removeTaskFromModalList;
           }
 
-          if (workItemType == self.PROJECT_WORK_ITEM_TYPE) {
-            theData = {'workItemType' : self.PROJECT_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+          if (workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
+            formToPost = {'workItemType' : $rootScope.PROJECT_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+            cleanUpFunction = addWorkItemService.removeProjectFromModalList;
           }
 
-          if (workItemType == self.LEAVE_WORK_ITEM_TYPE) {
-            theData = {'workItemType' : self.LEAVE_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+          if (workItemType == $rootScope.LEAVE_WORK_ITEM_TYPE) {
+            formToPost = {'workItemType' : $rootScope.LEAVE_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
           }
 
-          // go get it
+          // post it
           $http({
             method : 'post',
-            url : '/timeSheets/' + self.currentDateUrlString + '/lineItems/',
-            data : theData
+            url : '/timeSheets/' + $scope.currentDateUrlString + '/lineItems/',
+            data : formToPost
           }).then(function success(response){
-            self.currentTimeSheet.lineItems.push(response.data);
+            
+            // add the work item to the time sheet
+            $scope.currentTimeSheet.lineItems.push(response.data);
+            // wonder if this works...
+            cleanUpFunction(workItemCode);
+            
+            // remove the work item from the modal
+            /*
+            if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
+              $scope.modalTaskList = addWorkItemService.removeTaskFromModalList(workItemCode);
+            }
+            if (workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
+              $scope.modalProjectList = addWorkItemService.removeProjectFromModalList(workItemCode);
+            }
+
+            if (workItemType == $rootScope.LEAVE_WORK_ITEM_TYPE) {
+              // TODO leave...
+            } */
+
           });
+        } else {
+          // TODO
+          // this means it is in modal AND on time sheet. need to remove...
         }
       }
     };
@@ -126,101 +251,9 @@ meanApp.controller('DashboardController', function($http) {
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
     var yyyy = today.getFullYear();
-    self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+    $scope.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
 
     /* get today's time sheet */
     self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
    
-});
-
-meanApp.controller('WorkItemModalController', function($http) {
-
-    var self = this;
-    self.queryString = '';
-    self.taskList = [];
-    self.addedTasks = [];
-    self.projectList = [];
-    self.addedProjects = [];
-    self.addedLeave = [];
-
-    function initializeProjects() {
-      $http({
-          method : 'get',
-          url : '/projects'
-        }).then(function success(response){
-          self.projectList = response.data;
-        });
-    }
-
-    initializeProjects();
-
-    function initializeTasks() {
-      $http({
-          method : 'get',
-          url : '/tasks'
-        }).then(function success(response){
-          self.taskList = response.data;
-        });
-    }
-
-    initializeTasks();
-
-    self.searchWorkItems = function () {
-
-      // dont bother for empty strings
-      if (self.queryString) {
-        
-        // query tasks
-        $http({
-          method : 'get',
-          url : '/tasks?q=' + self.queryString
-        }).then(function success(response){
-          self.taskList = response.data;
-        });
-
-        // query projects
-        $http({
-          method : 'get',
-          url : '/projects?q=' + self.queryString
-        }).then(function success(response){
-          self.projectList = response.data;
-        });
-      };
-    }
-
-    self.removeWorkItemFromList = function(workItemType, workItemCode) {
-      if (workItemType == 'Task') {
-        
-        self.addedTasks.push(workItemCode);
-        for(var i = 0; i < self.taskList.length; i++){
-          if (self.taskList[i].code == workItemCode){
-            self.taskList.splice(i, 1);
-            break;
-          }
-        }
-      }
-
-      if(workItemType == 'Project'){
-
-        self.addedProjects.push(workItemCode);
-        for(var i = 0; i < self.projectList.length; i++){
-          if (self.projectList[i].code == workItemCode){
-            self.projectList.splice(i, 1);
-            break;
-          }
-        }
-      }
-
-      if (workItemType == 'Leave') {
-
-        self.addedLeave.push(workItemCode);
-        for(var i = 0; i < self.leaveList.length; i++){
-          if (self.leaveList[i].code == workItemCode){
-            self.leaveList.splice(i, 1);
-            break;
-          }
-        }
-      }
-    }
-
-});
+}]);
