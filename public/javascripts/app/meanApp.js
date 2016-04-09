@@ -9,27 +9,7 @@ meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScop
     self.projectList = [];
     self.taskList = [];
 
-    self.initializeProjects = function() {
-      return $http({
-          method : 'get',
-          url : '/projects'
-        }).then(function success(response){
-          self.projectList = response.data;
-          return self.projectList;
-        });
-    }
-
-    self.initializeTasks = function() {
-      return $http({
-          method : 'get',
-          url : '/tasks'
-        }).then(function success(response){
-          self.taskList = response.data;
-          return self.taskList;
-        });
-    }
-
-    self.searchTasks = function (queryString) {
+    self.getModalTaskList = function (queryString, currentLineItems) {
 
       // dont bother for empty strings
       if (queryString) {
@@ -51,26 +31,54 @@ meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScop
       }
     }
 
-    self.searchProjects = function (queryString) {
+    self.getModalProjectList = function (queryString, currentLineItems) {
 
-      // dont bother for empty strings
+      var urlToUse = '';
+
       if (queryString) {
-        return $http({
-          method : 'get',
-          url : '/projects?q=' + queryString
-        }).then(function success(response){
-          self.projectList = response.data;
-          return self.projectList;
-        });
+
+        // if a query is provided, build the search url
+        urlToUse = '/projects?q=' + queryString;
+
       } else {
-        return $http({
-          method : 'get',
-          url : '/projects'
-        }).then(function success(response){
-          self.projectList = response.data;
-          return self.projectList;
-        });
+
+        // use the basic get url otherwise
+        urlToUse = '/projects';
       }
+
+      return $http({
+        method : 'get',
+        url : urlToUse
+      }).then(function success(response){
+
+        // check if the time sheet is empty...
+        if (currentLineItems) {
+
+          // for each LineItem...
+          for (var i = 0; i < currentLineItems.length; i++) {
+            
+            // if it is a project...
+            if (currentLineItems[i].workItemType == 'Project') {
+
+              // search the returned project list...
+              for (var j = 0; j < response.data.length; j++) {
+                
+                // for a project code match...
+                if (response.data[j].code == currentLineItems[i].workItemCode) {
+
+                  // and remove any that you find.
+                  response.data.splice(j, 1);
+                }
+              }
+            }
+          }
+        }
+
+        // update the current list and return
+        self.projectList = response.data;
+        return self.projectList;
+      });
+
     }
 
     self.isAlreadyOnTimeSheet = function(timeSheet, workItemType, workItemCode) {
@@ -131,8 +139,6 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
     $scope.currentTimeSheet = {};
     $scope.currentDateUrlString = {};
     $scope.queryString = '';
-    addWorkItemService.initializeProjects().then(function(obj){ $scope.modalProjectList = obj;});
-    addWorkItemService.initializeTasks().then(function(obj){ $scope.modalTaskList = obj;});
     
   	var self = this;
     self.datePickerInput = '';
@@ -197,8 +203,10 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
    	};
 
     self.searchWorkItems = function (stringQuery) {
-      addWorkItemService.searchTasks(stringQuery).then(function(d) { $scope.modalTaskList = d; });
-      addWorkItemService.searchProjects(stringQuery).then(function(d) { $scope.modalProjectList = d; });
+      addWorkItemService.getModalTaskList(stringQuery, $scope.currentTimeSheet.lineItems).then(
+        function(d) { $scope.modalTaskList = d; });
+      addWorkItemService.getModalProjectList(stringQuery, $scope.currentTimeSheet.lineItems).then(
+        function(d) { $scope.modalProjectList = d; });
     }
 
     self.addLineItem = function(workItemType, workItemCode){
@@ -258,5 +266,9 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
 
     /* get today's time sheet */
     self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
+
+    /* populate work items modal */
+    addWorkItemService.getModalProjectList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalProjectList = obj;});
+    addWorkItemService.getModalTaskList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalTaskList = obj;});
    
 }]);
