@@ -11,24 +11,51 @@ meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScop
 
     self.getModalTaskList = function (queryString, currentLineItems) {
 
-      // dont bother for empty strings
+      var urlToUse = '';
+
       if (queryString) {
-        return $http({
-          method : 'get',
-          url : '/tasks?q=' + queryString
-        }).then(function success(response){
-          self.taskList = response.data;
-          return self.taskList;
-        });
+
+        // if a query is provided, build the search url
+        urlToUse = '/tasks?q=' + queryString;
+
       } else {
-        return $http({
-          method : 'get',
-          url : '/tasks'
-        }).then(function success(response){
-          self.taskList = response.data;
-          return self.taskList;
-        });
+
+        // use the basic get url otherwise
+        urlToUse = '/tasks';
       }
+
+      return $http({
+        method : 'get',
+        url : urlToUse
+      }).then(function success(response){
+
+        // check if the time sheet is empty...
+        if (currentLineItems) {
+
+          // for each LineItem...
+          for (var i = 0; i < currentLineItems.length; i++) {
+            
+            // if it is a project...
+            if (currentLineItems[i].workItemType == 'Task') { // TODO should use the global
+
+              // search the returned project list...
+              for (var j = 0; j < response.data.length; j++) {
+                
+                // for a project code match...
+                if (response.data[j].code == currentLineItems[i].workItemCode) {
+
+                  // and remove any that you find.
+                  response.data.splice(j, 1);
+                }
+              }
+            }
+          }
+        }
+
+        // update the current list and return
+        self.taskList = response.data;
+        return self.taskList;
+      });
     }
 
     self.getModalProjectList = function (queryString, currentLineItems) {
