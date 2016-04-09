@@ -240,6 +240,7 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
         function(d) { $scope.modalTaskList = d; });
       addWorkItemService.getModalProjectList(stringQuery, $scope.currentTimeSheet.lineItems).then(
         function(d) { $scope.modalProjectList = d; });
+      $scope.queryString = stringQuery;
     }
 
     self.addLineItem = function(workItemType, workItemCode){
