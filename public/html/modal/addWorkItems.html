@@ -11,7 +11,7 @@
         <h4 class="modal-title" style="text-align:left; float:left; margin-right: 10px;">Work Items</h4>
         <form class="form-inline">
           <div class="input-group">
-            <input class="form-control input-md" type="text" style="width: 400px;"placeholder="Search..." ng-model="queryString" ng-model-options="{ debounce: 850 }" ng-change="dashCtrl.searchWorkItems()"/>
+            <input class="form-control input-md" type="text" style="width: 400px;" placeholder="Search..." ng-model="queryString" ng-model-options="{ debounce: 850 }" ng-change="dashCtrl.searchWorkItems(queryString)"/>
             <span class="input-group-addon"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></span>
           </div>
         </form>

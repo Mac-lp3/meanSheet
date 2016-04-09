@@ -40,7 +40,15 @@ meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScop
           self.taskList = response.data;
           return self.taskList;
         });
-      };
+      } else {
+        return $http({
+          method : 'get',
+          url : '/tasks'
+        }).then(function success(response){
+          self.taskList = response.data;
+          return self.taskList;
+        });
+      }
     }
 
     self.searchProjects = function (queryString) {
@@ -54,7 +62,15 @@ meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScop
           self.projectList = response.data;
           return self.projectList;
         });
-      };
+      } else {
+        return $http({
+          method : 'get',
+          url : '/projects'
+        }).then(function success(response){
+          self.projectList = response.data;
+          return self.projectList;
+        });
+      }
     }
 
     self.isAlreadyOnTimeSheet = function(timeSheet, workItemType, workItemCode) {
@@ -180,9 +196,9 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
      	});
    	};
 
-    self.searchWorkItems = function () {
-      $scope.modalTaskList = addWorkItemService.searchTasks($scope.queryString);
-      $scope.modalProjectList = addWorkItemService.searchProjects($scope.queryString);
+    self.searchWorkItems = function (stringQuery) {
+      addWorkItemService.searchTasks(stringQuery).then(function(d) { $scope.modalTaskList = d; });
+      addWorkItemService.searchProjects(stringQuery).then(function(d) { $scope.modalProjectList = d; });
     }
 
     self.addLineItem = function(workItemType, workItemCode){
@@ -198,7 +214,7 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
           var formToPost = {};
           var cleanUpFunction = {};
 
-          // Build formToPost based on work item type
+          // Build formToPost and cleanUpFunction based on work item type
           if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
             formToPost = {'workItemType' : $rootScope.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
             cleanUpFunction = addWorkItemService.removeTaskFromModalList;
@@ -222,22 +238,9 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
             
             // add the work item to the time sheet
             $scope.currentTimeSheet.lineItems.push(response.data);
-            // wonder if this works...
-            cleanUpFunction(workItemCode);
-            
+
             // remove the work item from the modal
-            /*
-            if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
-              $scope.modalTaskList = addWorkItemService.removeTaskFromModalList(workItemCode);
-            }
-            if (workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
-              $scope.modalProjectList = addWorkItemService.removeProjectFromModalList(workItemCode);
-            }
-
-            if (workItemType == $rootScope.LEAVE_WORK_ITEM_TYPE) {
-              // TODO leave...
-            } */
-
+            cleanUpFunction(workItemCode);
           });
         } else {
           // TODO
