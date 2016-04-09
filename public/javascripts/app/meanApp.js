@@ -1,5 +1,8 @@
 var meanApp = angular.module('meanApp', []);
 
+/*
+ *  Service that helps query and maintain a list of task and project work items for the add work item modal
+ */
 meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScope, $http) {
 
     var self = this;
@@ -36,7 +39,7 @@ meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScop
           for (var i = 0; i < currentLineItems.length; i++) {
             
             // if it is a project...
-            if (currentLineItems[i].workItemType == 'Task') { // TODO should use the global
+            if (currentLineItems[i].workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
 
               // search the returned project list...
               for (var j = 0; j < response.data.length; j++) {
@@ -85,7 +88,7 @@ meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScop
           for (var i = 0; i < currentLineItems.length; i++) {
             
             // if it is a project...
-            if (currentLineItems[i].workItemType == 'Project') {
+            if (currentLineItems[i].workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
 
               // search the returned project list...
               for (var j = 0; j < response.data.length; j++) {
@@ -147,6 +150,9 @@ meanApp.service('addWorkItemService', ['$rootScope', '$http', function($rootScop
     }
 }]);
 
+/*
+ * Contrller for all changes that occur on the dashboard.
+ */
 meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '$scope', '$http', 
   function(addWorkItemService, $rootScope, $scope, $http) {
 
@@ -165,7 +171,7 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
 
     $scope.currentTimeSheet = {};
     $scope.currentDateUrlString = {};
-    $scope.queryString = '';
+    //$scope.queryString = '';
     
   	var self = this;
     self.datePickerInput = '';
@@ -282,7 +288,61 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
           // this means it is in modal AND on time sheet. need to remove...
         }
       }
-    };
+    }
+
+    self.removeLineItem = function(workItemType, workItemCode) {
+
+      // check what kind of work item we are looking for
+      if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
+
+        // look through each line item..
+        for (var i = 0; i < $scope.currentTimeSheet.lineItems.length; i++) {
+
+          // if it is a task...
+          if ($scope.currentTimeSheet.lineItems[i].workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
+
+            // and if it has the same code...
+            if ($scope.currentTimeSheet.lineItems[i].workItemCode == workItemCode) {
+
+              // remove it...
+              $scope.currentTimeSheet.lineItems.splice(i, 1);
+
+              // refresh task modal list...
+              addWorkItemService.getModalTaskList($scope.queryString, $scope.currentTimeSheet.lineItems).then(
+                function(d) { $scope.modalTaskList = d; });
+
+              // and break.
+              break;
+            }
+          }
+        }
+      }
+      if (workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
+
+        // look through each line item..
+        for (var i = 0; i < $scope.currentTimeSheet.lineItems.length; i++) {
+
+          // if it is a project...
+          if ($scope.currentTimeSheet.lineItems[i].workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
+
+            // and if it has the same code...
+            if ($scope.currentTimeSheet.lineItems[i].workItemCode == workItemCode) {
+
+              // remove it...
+              $scope.currentTimeSheet.lineItems.splice(i, 1);
+
+              // refresh task modal list...
+              addWorkItemService.getModalProjectList($scope.queryString, $scope.currentTimeSheet.lineItems).then(
+                function(d) { $scope.modalProjectList = d; });
+
+              // and break.
+              break;
+            }
+          }
+        }
+      }
+
+    }
 
    	/* build initial date string */
     var today = new Date();

@@ -102,7 +102,7 @@
                       <input type="text" class="form-control" value="{{lineItem.sundayHours}}" style="width: 45px;" maxlength="4">
                     </div>
                   </td>
-                  <td><button ng-hide="currentTimeSheet.isSubmitted" class="btn btn-xs btn-default" type="button">Remove</button></td>
+                  <td><button ng-hide="currentTimeSheet.isSubmitted" class="btn btn-xs btn-default" type="button" ng-click="dashCtrl.removeLineItem(lineItem.workItemType, lineItem.workItemCode)">Remove</button></td>
                 </tr>
               </tbody>
             </table>
