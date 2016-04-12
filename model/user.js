@@ -13,7 +13,12 @@ var userSchema = new Schema({
 
 const SALT_WORK_FACTOR = 15; // dafault is 10
 
-// before each save, hash the password if it has been updated
+/*
+ * Before each save, hash the password if it has been updated.
+ * NOTE THAT A PASSWORD IS NOT HASHED UNTIL THE save FUNCTION IS CALLED.
+ * THIS MEANS CARE MUST BE TAKEN WHEN DEALING WITH NEW USER INSTNACES,
+ * AS THE PASSWORD WILL BE IN PLAIN TEXT UNTIL SAVED.
+ */ 
 userSchema.pre('save', function(next) {
 
     var user = this;
@@ -43,6 +48,15 @@ userSchema.pre('save', function(next) {
         });
     });
 });
+
+userSchema.methods.comparePassword = function(providedPassword, callBack) {
+    bcrypt.compare(providedPassword, this.password, function(err, isMatch) {
+        if (err) {
+        	return callBack(err);
+        }
+        callBack(null, isMatch);
+    });
+};
  
 // create a model using the schema
 var User = mongoose.model('User', userSchema);
