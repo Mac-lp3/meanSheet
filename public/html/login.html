@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="meanApp">
   <head>
     
     <meta charset="utf-8">
@@ -21,24 +21,28 @@
 
   </head>
 
-  <body>
+  <body ng-controller="LoginController as loginCtrl">
 
     <div class="container">
 
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
+      <div class="col-md-4 col-md-offset-4">
+
+      <form>
+        <h2>Please sign in</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+        <div class="btn-group btn-group-justified">
+          <a type="button" class="btn btn-primary btn-block">Sign in</a>
+          <a type="button" class="btn btn-default btn-block">Sign up</a>
+        </div>
       </form>
+    </div>
 
     </div> <!-- /container -->
-
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="../javascripts/angular.js"></script>
     <script src="../javascripts/app/meanApp.js"></script>
     <script src="../javascripts/app/login.js"></script>
   </body>
