@@ -8,10 +8,22 @@
 
       <div class="modal-body">
         
-        <h1>lol, idk</h1>
+        <form>
+          <label for="inputFirstName">First Name</label>
+          <input type="email" id="inputFirstName" class="form-control" placeholder="First Name" ng-model="loginCtrl.formFirstName" required autofocus>
+          <label for="inputLastName">Last Name</label>
+          <input type="email" id="inputLastName" class="form-control" placeholder="Last Name" ng-model="loginCtrl.formLastName" required autofocus>
+          <label for="inputEmail">Email address</label>
+          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="loginCtrl.formEmailAddress" required autofocus>
+          <label for="inputPassword">Password</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password"  ng-model="loginCtrl.formPassword"required>
+          <label for="inputConfirmPassword">Confirm Password</label>
+          <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" ng-model="loginCtrl.formConfirmPassword" required>
+        </form>
 
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
