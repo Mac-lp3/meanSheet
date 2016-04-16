@@ -1,4 +1,3 @@
-meanApp.controller('loginController', ['$http', function($http) {
+meanApp.controller('LoginController', ['$http', function($http) {
 	
-  }
-]);
+}]);

@@ -36,12 +36,16 @@
 
         <div class="btn-group btn-group-justified">
           <a type="button" class="btn btn-primary btn-block">Sign in</a>
-          <a type="button" class="btn btn-default btn-block">Sign up</a>
+          <a type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#signUpModal" href="#signUpModal">Sign up</a>
         </div>
       </form>
     </div>
 
+    <div ng-include src="'./html/modal/signUp.html'"></div> 
+
     </div> <!-- /container -->
+    <script src="../javascripts/jquery-2.2.2.min.js"></script>
+    <script src="../javascripts/bootstrap.min.js"></script>
     <script src="../javascripts/angular.js"></script>
     <script src="../javascripts/app/meanApp.js"></script>
     <script src="../javascripts/app/login.js"></script>
