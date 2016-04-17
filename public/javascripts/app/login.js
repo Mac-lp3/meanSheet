@@ -13,5 +13,14 @@ meanApp.controller('LoginController', ['$http', function($http) {
 	self.formPassword = '';
 	self.formConfirmPassword = '';
 
+	self.postSignUp = function ()
+
+
+	};
+
+	self.postSignIn = function () {
+
+	};
+
 	
 }]);
