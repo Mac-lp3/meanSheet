@@ -69,16 +69,57 @@ router.get('/:dateString', function(req, res, next) {
     }
 });
 
+/*
+ * TODO TODO TODO TODO
+ * How to determine save/submit/approve? You don't. That should be in the client side. But is that unsafe?
+ * You should still have logic here. Hax are real.
+ */
+router.post('/:dateString', function(req, res, next) {
+
+  // TODO get user object
+  var isoDate = req.params.dateString;
+  var queryDate = moment(dateString, 'YYYY-MM-DD');
+  TimeSheet.findOne({'username' : 'Jmoney', 'sundayDate' : queryDate.toDate()}, 
+        function(err, timeSheet) {
+        }
+  );
+
+});
+
 /* remove line item from time sheet */
 router.delete('/:dateString/lineItems/:workItemCode', function(req, res, next){
 
-  // Get the date path variable
-  var isoDate = req.params.dateString;
-  var workItemCode = req.params.workItemCode;
+  // TODO get user object
 
-  // TODO query mongoose for time sheet 
-  // TODO iterate over line items
-  // TODO remove the one that matches
+  // Get the date path variable
+  var workItemCode = req.params.workItemCode;
+  var isoDate = req.params.dateString;
+  var queryDate = moment(dateString, 'YYYY-MM-DD');
+
+  TimeSheet.findOne({'username' : 'Jmoney', 'sundayDate' : queryDate.toDate()}, 
+        function(err, timeSheet) {
+          
+          // log any errors
+          if (err){
+            console.log(err);
+          }
+          
+          // Make sure time sheet exists
+          if (timeSheet){
+
+            // search line items for the one provided
+            for (var i = 0; i < timeSheet.workItems.length; i++) {
+              if (timeSheet.lineItems[i].workItemCode == workItemCode){
+                
+                // remove and save
+                timeSheet.lineItems.data.splice(i, 1);
+                // TODO save
+                // TODO read into chaining mongoose functions
+              }
+            }
+          } 
+        }
+  );
 
 });
 
@@ -130,7 +171,7 @@ router.post('/:dateString/lineItems', function(req, res, next){
       Project.findOne({code : workItemCode}, theCallBack.bind({ 'res' : res, 'workItemType' : workItemType}));
     }
     if (workItemType == 'Leave') {
-
+      // TODO
     }
   }
 
