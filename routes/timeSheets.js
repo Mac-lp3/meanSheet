@@ -72,18 +72,54 @@ router.get('/:dateString', function(req, res, next) {
 /*
  * TODO TODO TODO TODO
  * How to determine save/submit/approve? You don't. That should be in the client side. But is that unsafe?
- * You should still have logic here. Hax are real.
+ * You should still have logic here. Hax are real. Logic on both.
  */
 router.post('/:dateString', function(req, res, next) {
 
   // TODO get user object
   var isoDate = req.params.dateString;
   var queryDate = moment(dateString, 'YYYY-MM-DD');
-  TimeSheet.findOne({'username' : 'Jmoney', 'sundayDate' : queryDate.toDate()}, 
-        function(err, timeSheet) {
-        }
-  );
 
+  var postedTimeSheet = req.body.timeSheet;
+
+  // Check if this time sheet has already been submitted
+  TimeSheet.findOne({'username' : 'Jmoney', 'sundayDate' : queryDate.toDate()}, 
+    function(err, timeSheet) {
+      
+      // log error
+      if (err){
+        console.log(err);
+      }
+      
+      // If the time sheet exists...
+      if (timeSheet){
+
+        // and it has already been submitted...
+        if (timeSheet.isSubmitted) {
+
+          // no actions should be possible on this time sheet
+          res.status().json();
+
+        } else {
+
+          // omg validation...
+          timeSheet.lineItems = postedTimeSheet.lineItems;
+          timeSheet.isSubmitted = postedTimeSheet.isSubmitted;
+
+          timeSheet.save(function (err) {
+            
+            // log error
+            if (err){
+              console.log(err);
+              // break out some how
+            }
+
+            res.status(200).json(timeSheet);
+          });
+        }
+      }
+    }
+  ); 
 });
 
 /* remove line item from time sheet */
