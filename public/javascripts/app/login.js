@@ -14,9 +14,7 @@ meanApp.controller('LoginController', ['$http', function($http) {
 	self.formConfirmPassword = '';
 
 	self.postSignUp = function () {
-
 		// TODO make sure confirmation matches
-		
 		$http({
 			method : 'post',
         	url : '/users',
@@ -27,11 +25,9 @@ meanApp.controller('LoginController', ['$http', function($http) {
         		password : self.formPassword
         	}
 		});
-
 	};
 
 	self.postSignIn = function () {
-
 		$http({
 			method : 'post',
         	url : '/login',
@@ -40,8 +36,6 @@ meanApp.controller('LoginController', ['$http', function($http) {
         		password : password
         	}
 		});
-
 	};
-
 	
 }]);

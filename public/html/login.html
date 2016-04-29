@@ -35,7 +35,7 @@
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="loginCtrl.password"required>
 
         <div class="btn-group btn-group-justified">
-          <a type="button" class="btn btn-primary btn-block">Sign in</a>
+          <a type="button" class="btn btn-primary btn-block" ng-click="loginCtrl.postSignIn">Sign in</a>
           <a type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#signUpModal" href="#signUpModal">Sign up</a>
         </div>
       </form>

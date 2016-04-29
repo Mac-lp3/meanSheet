@@ -7,7 +7,6 @@
       </div>
 
       <div class="modal-body">
-        
         <form>
           <label for="inputFirstName">First Name</label>
           <input type="email" id="inputFirstName" class="form-control" placeholder="First Name" ng-model="loginCtrl.formFirstName" required autofocus>
@@ -20,12 +19,14 @@
           <label for="inputConfirmPassword">Confirm Password</label>
           <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" ng-model="loginCtrl.formConfirmPassword" required>
         </form>
-
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" 
+          <a type="button" class="btn btn-primary btn-block" ng-click="loginCtrl.postSignIn">Submit</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
+
     </div>
   </div>
 </div>
