@@ -340,7 +340,17 @@ meanApp.controller('DashboardController', ['addWorkItemService', '$rootScope', '
           }
         }
       }
+    }
 
+    self.postTimeSheet = function(){
+      $http({
+        method : 'post',
+        data : {timeSheet : $scope.currentTimeSheet},
+        url : '/timeSheets/' + $scope.currentDateUrlString 
+      }).then(function success(response){
+        $scope.currentDateUrlString = $scope.currentDateUrlString ;
+        $scope.currentTimeSheet = response.data;
+      });
     }
 
    	/* build initial date string */

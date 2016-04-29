@@ -82,12 +82,15 @@ router.post('/:dateString', function(req, res, next) {
 
   var postedTimeSheet = req.body.timeSheet;
 
+  console.log('got here!');
+
   // Check if this time sheet has already been submitted
   TimeSheet.findOne({'username' : 'Jmoney', 'sundayDate' : queryDate.toDate()}, 
     function(err, timeSheet) {
       
       // log error
       if (err){
+        console.log('got here');
         console.log(err);
       }
       
@@ -98,7 +101,7 @@ router.post('/:dateString', function(req, res, next) {
         if (timeSheet.isSubmitted) {
 
           // no actions should be possible on this time sheet
-          res.status().json();
+          res.status(409);
 
         } else {
 
@@ -110,6 +113,7 @@ router.post('/:dateString', function(req, res, next) {
             
             // log error
             if (err){
+              console.log('got here...');
               console.log(err);
               // break out some how
             }
@@ -118,6 +122,26 @@ router.post('/:dateString', function(req, res, next) {
           });
         }
       }
+
+      // omg validation...
+      var timeSheetToSave = new TimeSheet();
+      timeSheetToSave.lineItems = postedTimeSheet.lineItems;
+      timeSheetToSave.isSubmitted = postedTimeSheet.isSubmitted;
+      timeSheetToSave.username = postedTimeSheet.username;
+      timeSheetToSave.sundayDate = postedTimeSheet.sundayDate;
+
+      // If the time sheet does not exist, just save it.
+      postedTimeSheet.save(function (err) {
+            
+        // log error
+        if (err){
+          console.log('got here.......');
+          console.log(err);
+          // break out some how
+        }
+
+        res.status(200).json(postedTimeSheet);
+      });
     }
   ); 
 });

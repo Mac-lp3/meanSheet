@@ -114,8 +114,8 @@
           <button class="btn btn-primary pull-left" type="button" data-toggle="modal" data-target="#workItemModal">Add Work Item</button>
         </div>
         <div class="col-md-6">
-          <button class="btn btn-success pull-right" type="button">Submit</button>
-          <button class="btn btn-primary pull-right" type="button">Save</button>
+          <button class="btn btn-success pull-right" type="button" ng-click="dashCtrl.postTimeSheet">Submit</button>
+          <button class="btn btn-primary pull-right" type="button" ng-click="dashCtrl.postTimeSheet()">Save</button>
           <button class="btn btn-default pull-right" type="button">Reset</button>
         </div>
 
