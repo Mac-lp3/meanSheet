@@ -7,12 +7,13 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 // routing
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var timeSheets = require('./routes/timeSheets');
 var users = require('./routes/users');
 var tasks = require('./routes/tasks');
 var projects = require('./routes/projects');
 var setup = require('./routes/setup');
+var auth = require('./routes/auth');
 
 var app = express();
 
@@ -28,7 +29,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', index);
+app.use('/login', auth);
 app.use('/setup', setup);
 app.use('/timeSheets', timeSheets);
 app.use('/users', users);
