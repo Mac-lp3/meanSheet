@@ -4,7 +4,11 @@ var router = express.Router();
 
 /* GET dash page. */
 router.get('/login', function(req, res, next) {
-  	res.sendFile(path.join(__dirname, '/../public/html/login.html'));
+
+    // TODO environment variables to send proper home page 
+    // TODO streams / piping
+
+    res.sendFile(path.join(__dirname, '/../public/html/login-dev.html'));
 });
 
 /* GET home page. */
