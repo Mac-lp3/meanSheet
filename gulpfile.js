@@ -1,6 +1,8 @@
-var gulp = require('gulp');
-var nodemon = require('gulp-nodemon');
-var browserSync = require('browser-sync').create();
+'use strict';
+
+const gulp = require('gulp');
+const nodemon = require('gulp-nodemon');
+const browserSync = require('browser-sync').create();
  
 gulp.task('dev', function() {
  
