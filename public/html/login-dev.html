@@ -21,7 +21,7 @@
 
   </head>
 
-  <body ng-controller="LoginController as loginCtrl">
+  <body>
 
     <div class="container">
 
@@ -51,7 +51,7 @@
 
     app = angular.module('devApp', []);
 
-    app.controller('DevLoginCtrl', [$http, function($http) {
+    app.controller('DevLoginCtrl', ['$http', function($http) {
 
       const self = this;
       self.emailAddress = '';
@@ -76,10 +76,11 @@
             emailAddress : self.emailAddress,
             password : self.password
           }
-        }).then(response){
+        }).then(function (response){
 
-        };
+        });
       };
+
     }])
 
     </script>
