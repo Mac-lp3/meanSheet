@@ -11,9 +11,9 @@ router.get('/login', function(req, res, next) {
     let stream = '';
 
     if (process.env.NODE_ENV === 'development') {
-        stream = fs.createReadStream(__dirname + '/../public/html/login-dev.html');
+        stream = fs.createReadStream(__dirname + '/../public/html/login/login-dev.html');
     } else {
-        stream = fs.createReadStream(__dirname + '/../public/html/login.html');
+        stream = fs.createReadStream(__dirname + '/../public/html/login/login.html');
     }
 
     stream.pipe(res);
