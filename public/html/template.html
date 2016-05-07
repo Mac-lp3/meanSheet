@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="meanApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/jquery-ui.css" rel="stylesheet">
+  </head>
+
+  <body style="padding-top: 50px;" ng-controller="DashboardController as dashCtrl">
+
+    <div class="container">
+
+      <div ng-include src="'./html/decorator/navbar.html'"></div>
+
+      <div ng-view></div>
+
+    </div>
+
+    <div ng-include src="'./html/modal/addWorkItems.html'"></div> 
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../javascripts/jquery-2.2.2.min.js"></script>
+    <script src="../javascripts/jquery-ui.min.js"></script>
+    <script src="../javascripts/angular.js"></script>
+    <script src="../javascripts/app/meanApp.js"></script>
+    <script src="../javascripts/app/index.js"></script>
+    <script src="../javascripts/bootstrap.min.js"></script>
+    <script>
+      $(function() {
+        $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+      });
+    </script>
+  </body>
+</html>

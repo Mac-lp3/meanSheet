@@ -1,0 +1,102 @@
+<div class="row">
+    <div class="col-md-8">
+      <h2>
+          <button ng-click="dashCtrl.getPreviousTimeSheet()" class="btn btn-default" style="display: inline-block;" aria-label="Left Align"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Prev</button>
+          Time Sheet for {{readableDate}}
+          <button ng-click="dashCtrl.getNextTimeSheet()" class="btn btn-default" style="display: inline-block;" aria-label="Right Align">Next<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+      </h2> 
+    </div>
+    <div class="col-md-4" style="margin-top: 20px;">
+      <form class="form-inline">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Select Date</label>
+            <input type="text" ng-model="dashCtrl.datePickerInput" class="form-control" id="datepicker" style="position: relative; z-index:100;">
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="dashCtrl.dateChange()">Update</button>
+      </form> 
+    </div>
+    <!-- h2 class="sub-header"></h2 -->
+</div>
+
+<div class="row">
+    <div class="table-responsive">
+      <table class="table table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Task/Project Code</th>
+            <th>Name</th>
+            <th>Mon</th>
+            <th>Tues</th>
+            <th>Wed</th>
+            <th>Thurs</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th>Sun</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="lineItem in currentTimeSheet.lineItems">
+            <td>
+              {{lineItem.workItemCode}}
+            </td>
+            <td>
+              {{lineItem.workItemName}}
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" value="{{lineItem.mondayHours}}" style="width: 45px;" maxlength="4">
+              </div>
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" value="{{lineItem.tuesdayHours}}" style="width: 45px;" maxlength="4">
+              </div>
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" value="{{lineItem.wednesdayHours}}" style="width: 45px;" maxlength="4">
+              </div>
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" value="{{lineItem.thursdayHours}}" style="width: 45px;" maxlength="4">
+              </div>
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" value="{{lineItem.fridayHours}}" style="width: 45px;" maxlength="4">
+              </div>
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" value="{{lineItem.saturdayHours}}" style="width: 45px;" maxlength="4">
+              </div>
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" value="{{lineItem.sundayHours}}" style="width: 45px;" maxlength="4">
+              </div>
+            </td>
+            <td><button ng-hide="currentTimeSheet.isSubmitted" class="btn btn-xs btn-default" type="button" ng-click="dashCtrl.removeLineItem(lineItem.workItemType, lineItem.workItemCode)">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<div class="row">
+
+  <div class="col-md-6">
+    <button class="btn btn-primary pull-left" type="button" data-toggle="modal" data-target="#workItemModal">Add Work Item</button>
+  </div>
+  
+  <div class="col-md-6">
+    <button class="btn btn-success pull-right" type="button" ng-click="dashCtrl.postTimeSheet">Submit</button>
+    <button class="btn btn-primary pull-right" type="button" ng-click="dashCtrl.postTimeSheet()">Save</button>
+    <button class="btn btn-default pull-right" type="button">Reset</button>
+  </div>
+
+</div>
+
+<div ng-include src="'./html/modal/addWorkItems.html'"></div> 
