@@ -8,15 +8,11 @@ const meanApp = angular.module('meanApp', [
 
 meanApp.config(['$routeProvider', function($routeProvider) {
 
-	// Is there a way for this to be env-dependent?
+    // Is there a way for this to be env-dependent?
     $routeProvider.
-      when('/login', {
-        templateUrl: 'login/login-dev.html',
-        controller: 'PhoneListCtrl'
-      }).
       when('/index', {
         templateUrl: 'dashboard/dashboard.html',
-        controller: 'PhoneDetailCtrl'
+        controller: 'DashboardController'
       }).
       otherwise({
         redirectTo: '/login/login-dev.html'
