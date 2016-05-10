@@ -29,13 +29,13 @@ angular.module('DashboardController', ['ngRoute'])
     $scope.currentDateUrlString = {};
     //$scope.queryString = '';
     
-  	const self = this;
+    const self = this;
     self.datePickerInput = '';
 
    	/* update variables on date change action */
    	self.dateChange = function () {
 
-   		// TODO refactor these three methods into one that takes a param
+        // TODO refactor these three methods into one that takes a param
 
         // build query param from new date
         const parts = self.datePickerInput.split('-');
@@ -48,50 +48,54 @@ angular.module('DashboardController', ['ngRoute'])
         $scope.readableDate = monthNames[mm] + ' ' + dd + ' ' + yyyy
         self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
         self.datePickerInput = '';
+    };
+
+    self.getPreviousTimeSheet = function () {
+
+    	// TODO refactor these three methods into one that takes a param
+
+        // get current date and subtract 7 days
+        var tempDate = new Date(self.currentTimeSheet.sundayDate);
+        tempDate.setDate(tempDate.getDate() - 7);
+
+        // build query string
+        var dd = tempDate.getDate();
+        var mm = tempDate.getMonth()+1; //January is 0!
+        var yyyy = tempDate.getFullYear();
+
+        // get new time sheet and update readable date
+        self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+        self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
    	};
 
-   	self.getPreviousTimeSheet = function () {
-   		
-   		// get current date and subtract 7 days
-   		var tempDate = new Date(self.currentTimeSheet.sundayDate);
-   		tempDate.setDate(tempDate.getDate() - 7);
+    self.getNextTimeSheet = function () {
 
-   		// build query string
-   		var dd = tempDate.getDate();
-      var mm = tempDate.getMonth()+1; //January is 0!
-      var yyyy = tempDate.getFullYear();
+        // TODO refactor these three methods into one that takes a param
 
-      // get new time sheet and update readable date
-      self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
-   		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
+        // get current date and add 7 days
+        var tempDate = new Date(self.currentTimeSheet.sundayDate);
+        tempDate.setDate(tempDate.getDate() + 7);
+
+        // build query string
+        const dd = tempDate.getDate();
+        const mm = tempDate.getMonth()+1; //January is 0!
+        const yyyy = tempDate.getFullYear()
+
+        // get new time sheet and update readable date
+        self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+        self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
    	};
 
-   	self.getNextTimeSheet = function () {
-   		
-   		// get current date and add 7 days
-      var tempDate = new Date(self.currentTimeSheet.sundayDate);
-   		tempDate.setDate(tempDate.getDate() + 7);
-
-   		// build query string
-      var dd = tempDate.getDate();
-      var mm = tempDate.getMonth()+1; //January is 0!
-      var yyyy = tempDate.getFullYear()
-
-      // get new time sheet and update readable date
-      self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
-   		self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-   	};
-
-   	/* helper method for the http call to time sheets */
-   	self.getTimeSheet = function (dateString) {
-      $http({
-     		method : 'get',
-     		url : '/timeSheets/' + dateString
-     	}).then(function success(response){
-        $scope.currentDateUrlString = dateString;
-     		$scope.currentTimeSheet = response.data;
-     	});
-   	};
+    /* helper method for the http call to time sheets */
+    self.getTimeSheet = function (dateString) {
+        $http({
+            method : 'get',
+            url : '/timeSheets/' + dateString
+        }).then(function success(response){
+            $scope.currentDateUrlString = dateString;
+            $scope.currentTimeSheet = response.data;
+        });
+    };
 
     self.searchWorkItems = function (stringQuery) {
       addWorkItemService.getModalTaskList(stringQuery, $scope.currentTimeSheet.lineItems).then(
@@ -106,13 +110,13 @@ angular.module('DashboardController', ['ngRoute'])
       if (workItemType) {
 
         // Check if it's already on the time sheet
-        var skip = addWorkItemService.isAlreadyOnTimeSheet($scope.currentTimeSheet, workItemType, workItemCode);
+        const skip = addWorkItemService.isAlreadyOnTimeSheet($scope.currentTimeSheet, workItemType, workItemCode);
 
         // If not, then work item data
         if (!skip) {
 
-          var formToPost = {};
-          var cleanUpFunction = {};
+          let formToPost = {};
+          let cleanUpFunction = {};
 
           // Build formToPost and cleanUpFunction based on work item type
           if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
@@ -214,10 +218,10 @@ angular.module('DashboardController', ['ngRoute'])
     }
 
    	/* build initial date string */
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth()+1; //January is 0!
-    var yyyy = today.getFullYear();
+    const today = new Date();
+    const dd = today.getDate();
+    const mm = today.getMonth()+1; //January is 0!
+    const yyyy = today.getFullYear();
     $scope.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
 
     /* get today's time sheet */
