@@ -1,9 +1,11 @@
-const addWorkItemServices = angular.module('AddWorkItemService', ['ngResource']);
+'use strict';
 
-addWorkItemServices.factory('AddWorkItemService', ['$rootScope', '$http',
+angular.module('AddWorkItemService', [])
+
+.factory('AddWorkItemService', ['$rootScope', '$http',
   function($rootScope, $http) {
 
-        var self = this;
+    const self = this;
     self.addedTasks = [];
     self.addedProjects = [];
     self.addedLeave = [];
@@ -12,7 +14,7 @@ addWorkItemServices.factory('AddWorkItemService', ['$rootScope', '$http',
 
     self.getModalTaskList = function (queryString, currentLineItems) {
 
-      var urlToUse = '';
+      let urlToUse = '';
 
       if (queryString) {
 
@@ -146,6 +148,5 @@ addWorkItemServices.factory('AddWorkItemService', ['$rootScope', '$http',
 
         return self.projectList;
     }
-
 
 }]);

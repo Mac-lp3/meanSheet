@@ -4,7 +4,8 @@
 const meanApp = angular.module('meanApp', [
   'ngRoute',
   'LoginController',
-  'DashboardController'
+  'DashboardController',
+  'AddWorkItemService'
 ]);
 
 meanApp.config(['$routeProvider', function($routeProvider) {
