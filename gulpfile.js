@@ -20,6 +20,8 @@ gulp.task('dev', function() {
  
   browserSync.watch([
     './public/html/*.html',
+    './public/app/*.html',
+    './public/app/*.js',
     './public/stylesheets/*.css',
     './public/javascripts/*.js'
   ]).on('change', browserSync.reload);
