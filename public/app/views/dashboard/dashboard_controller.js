@@ -3,9 +3,10 @@
 angular.module('DashboardController', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/dashboard', {
-    templateUrl: 'dashboard/dashboard.html',
-    controller: 'DashboardController'
+  $routeProvider.when('/', {
+    templateUrl: 'views/dashboard/dashboard.html',
+    controller: 'DashboardController',
+    controllerAs: "dashCtrl"
   });
 }])
 

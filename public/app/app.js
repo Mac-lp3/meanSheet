@@ -11,9 +11,9 @@ const meanApp = angular.module('meanApp', [
 meanApp.config(['$routeProvider', function($routeProvider) {
 
     // Is there a way for this to be env-dependent?
-    // $routeProvider.
-    //   otherwise({
-    //     redirectTo: '/login/login-dev.html'
-    // });
+    $routeProvider.
+       otherwise({
+         redirectTo: '/'
+    });
 
 }]);
