@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('AddWorkItemService', [])
+angular.module('addWorkItemService', [])
 
-.factory('AddWorkItemService', ['$rootScope', '$http',
+.service('addWorkItemService', ['$rootScope', '$http',
   function($rootScope, $http) {
 
     const self = this;

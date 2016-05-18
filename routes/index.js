@@ -30,11 +30,6 @@ router.post('/login', function(req, res, next) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-/* GET home page. */
-router.get('/temp', function(req, res, next) {
   
     let stream = fs.createReadStream(__dirname + '/../public/app/template.html');
 
