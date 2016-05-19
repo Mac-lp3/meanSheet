@@ -1,0 +1,32 @@
+<div id="signUpModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Sign Up</h4>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <label for="inputFirstName">First Name</label>
+          <input type="email" id="inputFirstName" class="form-control" placeholder="First Name" ng-model="loginCtrl.formFirstName" required autofocus>
+          <label for="inputLastName">Last Name</label>
+          <input type="email" id="inputLastName" class="form-control" placeholder="Last Name" ng-model="loginCtrl.formLastName" required autofocus>
+          <label for="inputEmail">Email address</label>
+          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="loginCtrl.formEmailAddress" required autofocus>
+          <label for="inputPassword">Password</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password"  ng-model="loginCtrl.formPassword"required>
+          <label for="inputConfirmPassword">Confirm Password</label>
+          <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" ng-model="loginCtrl.formConfirmPassword" required>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal" 
+          <a type="button" class="btn btn-primary btn-block" ng-click="loginCtrl.postSignIn">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>

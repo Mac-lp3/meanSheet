@@ -1,0 +1,91 @@
+<div id="workItemModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+        <h4 class="modal-title" style="text-align:left; float:left; margin-right: 10px;">Work Items</h4>
+        <form class="form-inline">
+          <div class="input-group">
+            <input class="form-control input-md" type="text" style="width: 400px;" placeholder="Search..." ng-model="queryString" ng-model-options="{ debounce: 850 }" ng-change="dashCtrl.searchWorkItems(queryString)"/>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></span>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-body">
+        
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a data-toggle="tab" href="#taskTab">Tasks</a></li>
+          <li role="presentation"><a data-toggle="tab" href="#projectTab">Projects</a></li>
+          <li role="presentation"><a data-toggle="tab" href="#timeOffTab">Time Off</a></li>
+        </ul>
+
+        <div class="tab-content">
+
+          <div id="taskTab" class="tab-pane active">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+                <tr ng-repeat="task in modalTaskList">
+                  <td>{{task.code}}</td>
+                  <td>{{task.description}}</td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(TASK_WORK_ITEM_TYPE, task.code);">Add</button></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div id="projectTab" class="tab-pane">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+                <tr ng-repeat="project in modalProjectList">
+                  <td>{{project.code}}</td>
+                  <td>{{project.description}}</td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(PROJECT_WORK_ITEM_TYPE, project.code);">Add</button></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div id="timeOffTab" class="tab-pane">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>Sick Leave</td>
+                  <td>The flu? Hung over?</td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="">Add</button></td>
+                </tr>
+                <tr>
+                  <td>Vacation</td>
+                  <td>I see London, I see France</td>
+                  <td><button class="btn btn-xs btn-primary" ng-click="">Add</button></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
