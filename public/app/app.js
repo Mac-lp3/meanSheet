@@ -3,7 +3,7 @@
 // Declare app level module which depends on views, and components
 const meanApp = angular.module('meanApp', [
   'ngRoute',
-  'LoginController',
+  'DevLoginController',
   'DashboardController',
   'addWorkItemService'
 ]);
