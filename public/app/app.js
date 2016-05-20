@@ -13,7 +13,7 @@ meanApp.config(['$routeProvider', function($routeProvider) {
     // Is there a way for this to be env-dependent?
     $routeProvider.
        otherwise({
-         redirectTo: '/'
+         redirectTo: '/login'
     });
 
 }]);

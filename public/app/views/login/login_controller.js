@@ -4,7 +4,7 @@ angular.module('LoginController', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/login', {
-    templateUrl: 'login/login-dev.html',
+    templateUrl: 'views/login/login-dev.html',
     controller: 'LoginController'
   });
 }])
