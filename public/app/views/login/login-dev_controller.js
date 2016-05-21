@@ -10,11 +10,12 @@ angular.module('DevLoginController', ['ngRoute'])
   });
 }])
 
-.controller('DevLoginController', ['$http', function($http) {
+.controller('DevLoginController', ['$http', '$location', function($http, $location) {
 
     const self = this;
     self.emailAddress = '';
     self.password = '';
+    self.errorMessage = '';
 
     self.submit = function () {
 
@@ -29,14 +30,24 @@ angular.module('DevLoginController', ['ngRoute'])
         }
 
         $http({
+
             method : 'POST',
             url : '/login',
             data : {
                 emailAddress : self.emailAddress,
                 password : self.password
             }
-        }).then(function (response){
-          // TODO 
+
+        }).then(function success(response){
+
+          // forward the user to the dashboard
+          $location.path('/');
+
+        }, function error(response){
+
+            // TODO
+            self.errorMessage = 'you done goofed';
+
         });
     };
 }])

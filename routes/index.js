@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const User = require('../model/user');
 const fs = require('fs');
 
 /* GET login page. */
@@ -23,8 +24,23 @@ router.get('/login', function(req, res, next) {
 /* POST login form. */
 router.post('/login', function(req, res, next) {
 
-    const email = req.body.emailAddress;
-    console.log(email);
+    console.log('tryna sign in');
+
+    const emailAddress = req.body.emailAddress;
+
+    User.findOne({ 'email': emailAddress } , function(err, user){
+        
+        if (err) {
+            // TODO
+        }
+
+        if (user) {
+            res.status(200).json({ 'emailAddress': emailAddress });
+        } else {
+            res.sendStatus(403);
+        }
+
+    });
 
 });
 

@@ -23,26 +23,25 @@ router.get('/', function(req, res, next) {
 	        	if (err)
 	            	console.log(err);
 
-	            // TODO how log??
-	        	console.log('looking for: ' + myRe);
-	        	res.json(projects);
-	    	}
+                // TODO how log??
+                console.log('looking for: ' + myRe);
+                res.json(projects);
+            }
 	    );
     } else {
 
-    	console.log('grabbing all projects...');
+        console.log('grabbing all projects...');
 
-    	// TODO what do I look for? how much to limit?
-    	Project.find(
-    		{},
-    		function(err, projects){
+        // TODO what do I look for? how much to limit?
+        Project.find({},
+            function(err, projects){
 
-    			// TODO what do??
-    			if (err)
-    				console.log('err');
+                // TODO what do??
+                if (err)
+                    console.log('err');
 
-    			res.json(projects);
-    		}
+                res.json(projects);
+            }
     	).limit(25);
     }
 });
@@ -50,7 +49,7 @@ router.get('/', function(req, res, next) {
 /* get work items page. */
 router.get('/:projectCode', function(req, res, next) {
 
-	var projectCode = req.params.projectCode;
+    const projectCode = req.params.projectCode;
     
     Project.findOne({code : projectCode}, function (err, project){
 
