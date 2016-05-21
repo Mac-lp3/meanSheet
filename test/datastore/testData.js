@@ -10,25 +10,25 @@ var moment = require('moment');
 var user1 = new User();
 user1.username = 'Jmoney';
 user1.password = 'slippyfist';
-user1.email = 'slipster@lol.gov';
+user1.emailAddress = 'slipster@lol.gov';
 user1.department = 'LOL';
 
 var user2 = new User();
 user2.username = 'Big$C';
 user2.password = '311insidejob';
-user2.email = 'dollaz@IDK.gov';
+user2.emailAddress = 'dollaz@IDK.gov';
 user2.department = 'IDK';
 
 var user3 = new User();
 user3.username = 'dave';
 user3.password = 'badtouch';
-user3.email = 'serialz@wut.gov';
+user3.emailAddress = 'serialz@wut.gov';
 user3.department = 'WUT';
 
 var user4 = new User();
 user4.username = 'jizanthripus';
 user4.password = 'abc123';
-user4.email = 'gondo@idk.gov';
+user4.emailAddress = 'gondo@idk.gov';
 user4.department = 'IDK';
 
 const testUsers = [user1, user2, user3, user4];

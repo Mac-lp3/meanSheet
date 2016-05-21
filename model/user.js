@@ -8,7 +8,7 @@ var userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   department : {type : String},
-  email: {type : String},
+  emailAddress: {type : String},
 });
 
 const SALT_WORK_FACTOR = 15; // dafault is 10

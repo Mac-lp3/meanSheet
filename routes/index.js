@@ -28,7 +28,7 @@ router.post('/login', function(req, res, next) {
 
     const emailAddress = req.body.emailAddress;
 
-    User.findOne({ 'email': emailAddress } , function(err, user){
+    User.findOne({ 'emailAddress': emailAddress } , function(err, user){
         
         if (err) {
             // TODO
