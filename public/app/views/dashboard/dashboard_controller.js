@@ -96,11 +96,15 @@ angular.module('DashboardController', ['ngRoute'])
     };
 
     self.searchWorkItems = function (stringQuery) {
+
       addWorkItemService.getModalTaskList(stringQuery, $scope.currentTimeSheet.lineItems).then(
         function(d) { $scope.modalTaskList = d; });
+
       addWorkItemService.getModalProjectList(stringQuery, $scope.currentTimeSheet.lineItems).then(
         function(d) { $scope.modalProjectList = d; });
+      
       $scope.queryString = stringQuery;
+
     }
 
     self.addLineItem = function(workItemType, workItemCode){
@@ -108,7 +112,7 @@ angular.module('DashboardController', ['ngRoute'])
       if (workItemType) {
 
         // Check if it's already on the time sheet
-        const skip = addWorkItemService.isAlreadyOnTimeSheet($scope.currentTimeSheet, workItemType, workItemCode);
+        const skip = addWorkItemService.isAlreadyOnTimeSheet($scope.currentTimeSheet.lineItems, workItemType, workItemCode);
 
         // If not, then work item data
         if (!skip) {

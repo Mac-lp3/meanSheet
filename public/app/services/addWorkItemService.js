@@ -11,7 +11,10 @@ angular.module('addWorkItemService', [])
     self.addedLeave = [];
     self.projectList = [];
     self.taskList = [];
-
+    
+    /*
+     * Get tasks for display in the Tasks tab of the work item modal
+     */
     self.getModalTaskList = function (queryString, currentLineItems) {
 
       let urlToUse = '';
@@ -28,26 +31,28 @@ angular.module('addWorkItemService', [])
       }
 
       return $http({
+
         method : 'get',
         url : urlToUse
+
       }).then(function success(response){
 
         // check if the time sheet is empty...
         if (currentLineItems) {
 
-          // for each LineItem...
-          for (var i = 0; i < currentLineItems.length; i++) {
+          // then for each LineItem...
+          for (var i = 0; i < currentLineItems.length; ++i) {
             
             // if it is a project...
             if (currentLineItems[i].workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
 
-              // search the returned project list...
-              for (var j = 0; j < response.data.length; j++) {
+              // search the returned task list...
+              for (var j = 0; j < response.data.length; ++j) {
                 
-                // for a project code match...
+                // for a task code match...
                 if (response.data[j].code == currentLineItems[i].workItemCode) {
 
-                  // and remove any that you find.
+                  // and remove any that are found.
                   response.data.splice(j, 1);
                 }
               }
@@ -61,6 +66,9 @@ angular.module('addWorkItemService', [])
       });
     }
 
+    /*
+     * Get projects for display in the Projects tab of the work item modal
+     */
     self.getModalProjectList = function (queryString, currentLineItems) {
 
       var urlToUse = '';
@@ -111,14 +119,17 @@ angular.module('addWorkItemService', [])
 
     }
 
-    self.isAlreadyOnTimeSheet = function(timeSheet, workItemType, workItemCode) {
+    self.isAlreadyOnTimeSheet = function(currentLineItems, workItemType, workItemCode) {
       
       var isAlready = false;
 
-      for (var i = 0; i < timeSheet.lineItems.length; i++){
-          if (timeSheet.lineItems[i].code == workItemCode) {
-            isAlready = true;
-            break;
+      for (var i = 0; i < currentLineItems.length; i++){
+
+          if (currentLineItems[i].workItemType === workItemType) {
+              if (currentLineItems[i].code == workItemCode) {
+                  isAlready = true;
+                  break;
+              }
           }
       }
 
