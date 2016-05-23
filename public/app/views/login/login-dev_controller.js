@@ -28,6 +28,12 @@ angular.module('DevLoginController', ['ngRoute'])
         if (self.emailAddress === 'timeAnalyzing@mean.com'){
             self.password = 'timeAnalyzingPassword';
         }
+        if (self.emailAddress === 'slipster@lol.gov'){
+            self.password = 'slippyfist';
+        }
+        if (self.emailAddress === 'dollaz@IDK.gov'){
+            self.password = '311insidejob';
+        }
 
         $http({
 
@@ -41,7 +47,7 @@ angular.module('DevLoginController', ['ngRoute'])
         }).then(function success(response){
 
           // forward the user to the dashboard
-          $location.path('/');
+          $location.path('/dashboard');
 
         }, function error(response){
 
