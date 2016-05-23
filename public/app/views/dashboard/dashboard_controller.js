@@ -34,59 +34,55 @@ angular.module('DashboardController', ['ngRoute'])
     const self = this;
     self.datePickerInput = '';
 
-   	/* update variables on date change action */
-   	self.dateChange = function () {
+    self.changeDate = function (valueOrIncrement) {
+        
+        if (valueOrIncrement) {
 
-        // TODO refactor these three methods into one that takes a param
+            let dd = '';
+            let mm = '';
+            let yyyy = '';
 
-        // build query param from new date
-        const parts = self.datePickerInput.split('-');
+            if (valueOrIncrement == '1') {
 
-        let dd = parts[2];
-        let mm = parts[1]-1; //January is 0!
-        let yyyy = parts[0];
+                // increment time sheet week by 1
+                // get current date and add 7 days
+                let tempDate = new Date($scope.currentTimeSheet.sundayDate);
+                tempDate.setDate(tempDate.getDate() + 7);
+
+                // build query string
+                dd = tempDate.getDate();
+                mm = tempDate.getMonth() + 1; //January is 0!
+                yyyy = tempDate.getFullYear();
+
+            } else if (valueOrIncrement == '-1') {
+
+                // decrement time sheet week by 1
+                // get current date and subtract 7 days
+                let tempDate = new Date($scope.currentTimeSheet.sundayDate);
+                tempDate.setDate(tempDate.getDate() - 7);
+
+                // build query string
+                dd = tempDate.getDate();
+                mm = tempDate.getMonth() + 1; //January is 0!
+                yyyy = tempDate.getFullYear();
+
+            } else {
+
+                // read new date from input
+                const input = valueOrIncrement + '';
+                const parts = input.split('-');
+
+                dd = parts[2];
+                mm = parts[1]; //January is 0!
+                yyyy = parts[0];
     
-        /* update readable date and get the new time sheet */
-        $scope.readableDate = monthNames[mm] + ' ' + dd + ' ' + yyyy
-        self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-        self.datePickerInput = '';
+            }
+            
+            $scope.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+            self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
+        }
+
     };
-
-    self.getPreviousTimeSheet = function () {
-
-    	// TODO refactor these three methods into one that takes a param
-
-        // get current date and subtract 7 days
-        var tempDate = new Date($scope.currentTimeSheet.sundayDate);
-        tempDate.setDate(tempDate.getDate() - 7);
-
-        // build query string
-        var dd = tempDate.getDate();
-        var mm = tempDate.getMonth()+1; //January is 0!
-        var yyyy = tempDate.getFullYear();
-
-        // get new time sheet and update readable date
-        $scope.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
-        self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-   	};
-
-    self.getNextTimeSheet = function () {
-
-        // TODO refactor these three methods into one that takes a param
-
-        // get current date and add 7 days
-        var tempDate = new Date($scope.currentTimeSheet.sundayDate);
-        tempDate.setDate(tempDate.getDate() + 7);
-
-        // build query string
-        const dd = tempDate.getDate();
-        const mm = tempDate.getMonth()+1; //January is 0!
-        const yyyy = tempDate.getFullYear()
-
-        // get new time sheet and update readable date
-        $scope.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
-        self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
-   	};
 
     /* helper method for the http call to time sheets */
     self.getTimeSheet = function (dateString) {

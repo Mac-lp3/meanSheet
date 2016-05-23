@@ -3,18 +3,18 @@
 <div class="row">
   <div class="col-md-8">
     <h2>
-        <button ng-click="dashCtrl.getPreviousTimeSheet()" class="btn btn-default" style="display: inline-block;" aria-label="Left Align"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Prev</button>
+        <button ng-click="dashCtrl.changeDate(-1)" class="btn btn-default" style="display: inline-block;" aria-label="Left Align"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Prev</button>
         Time Sheet for {{readableDate}}
-        <button ng-click="dashCtrl.getNextTimeSheet()" class="btn btn-default" style="display: inline-block;" aria-label="Right Align">Next<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+        <button ng-click="dashCtrl.changeDate(1)" class="btn btn-default" style="display: inline-block;" aria-label="Right Align">Next<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
     </h2> 
   </div>
   <div class="col-md-4" style="margin-top: 20px;">
     <form class="form-inline">
         <div class="form-group">
           <label for="exampleInputEmail1">Select Date</label>
-          <input type="text" ng-model="dashCtrl.datePickerInput" class="form-control" id="datepicker" style="position: relative; z-index:100;">
+          <input type="text" ng-model="datePickerInput" class="form-control" id="datepicker" style="position: relative; z-index:100;">
       </div>
-      <button type="button" class="btn btn-primary" ng-click="dashCtrl.dateChange()">Update</button>
+      <button type="button" class="btn btn-primary" ng-click="dashCtrl.changeDate(datePickerInput)">Update</button>
     </form> 
   </div>
 </div>
@@ -99,4 +99,10 @@
 </div>
 
 <div ng-include src="'../modal/addWorkItems.html'"></div> 
+
+<script>
+  $(function() {
+    $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+  });
+</script>
 
