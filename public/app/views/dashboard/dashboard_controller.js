@@ -28,6 +28,7 @@ angular.module('DashboardController', ['ngRoute'])
 
     $scope.currentTimeSheet = {};
     $scope.currentDateUrlString = {};
+    $scope.readableDate = '';
     //$scope.queryString = '';
     
     const self = this;
@@ -56,7 +57,7 @@ angular.module('DashboardController', ['ngRoute'])
     	// TODO refactor these three methods into one that takes a param
 
         // get current date and subtract 7 days
-        var tempDate = new Date(self.currentTimeSheet.sundayDate);
+        var tempDate = new Date($scope.currentTimeSheet.sundayDate);
         tempDate.setDate(tempDate.getDate() - 7);
 
         // build query string
@@ -65,7 +66,7 @@ angular.module('DashboardController', ['ngRoute'])
         var yyyy = tempDate.getFullYear();
 
         // get new time sheet and update readable date
-        self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+        $scope.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
         self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
    	};
 
@@ -74,7 +75,7 @@ angular.module('DashboardController', ['ngRoute'])
         // TODO refactor these three methods into one that takes a param
 
         // get current date and add 7 days
-        var tempDate = new Date(self.currentTimeSheet.sundayDate);
+        var tempDate = new Date($scope.currentTimeSheet.sundayDate);
         tempDate.setDate(tempDate.getDate() + 7);
 
         // build query string
@@ -83,7 +84,7 @@ angular.module('DashboardController', ['ngRoute'])
         const yyyy = tempDate.getFullYear()
 
         // get new time sheet and update readable date
-        self.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+        $scope.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
         self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
    	};
 

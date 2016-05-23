@@ -35,8 +35,13 @@ router.post('/login', function(req, res, next) {
         }
 
         if (user) {
+
+            // TODO validate password
             res.status(200).json({ 'emailAddress': emailAddress });
+
         } else {
+            // user was not found
+            
             res.sendStatus(403);
         }
 

@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
 
   // TODO go to DB and get previous X time sheets
   res.json(testData.testTimeSheets);
+  
 });
 
 /* Get single time sheet by date. */
