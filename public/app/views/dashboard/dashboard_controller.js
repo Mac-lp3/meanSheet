@@ -91,16 +91,16 @@ angular.module('DashboardController', ['ngRoute'])
 
     self.searchWorkItems = function (stringQuery) {
 
-      addWorkItemService.getModalTaskList(stringQuery, $scope.currentTimeSheet.lineItems).then(
-        function(d) { $scope.modalTaskList = d; });
+        // addWorkItemService.getModalTaskList(stringQuery, $scope.currentTimeSheet.lineItems).then(
+        //   function(d) { $scope.modalTaskList = d; });
 
-      addWorkItemService.getModalProjectList(stringQuery, $scope.currentTimeSheet.lineItems).then(
-        function(d) { $scope.modalProjectList = d; });
+        // addWorkItemService.getModalProjectList(stringQuery, $scope.currentTimeSheet.lineItems).then(
+        //   function(d) { $scope.modalProjectList = d; });
 
-      addWorkItemService.populateModal(stringQuery, $scope.currentTimeSheet.lineItems);
+        addWorkItemService.populateModal(stringQuery, $scope.currentTimeSheet.lineItems);
+        $scope.workItemMap = addWorkItemService.workItemMap;
 
-      $scope.queryString = stringQuery;
-
+        $scope.queryString = stringQuery;
     }
 
     self.addLineItem = function(workItemType, workItemCode){
@@ -207,7 +207,7 @@ angular.module('DashboardController', ['ngRoute'])
     }
 
     self.saveTimeSheet = function(action){
-        //
+
         $http({
 
             method : 'post',

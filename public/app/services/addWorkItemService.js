@@ -51,10 +51,16 @@ angular.module('addWorkItemService', [])
                         for (let i = 0; i < response.data.length; ++i) {
 
                             if (self.isAlreadyOnTimeSheet(currentLineItems, property, response.data[i].code)) {
+
                                 response.data.splice(i, 1);
                             }
+
                         }
+
+                        workItemMap[property] = response.data;
                     }
+
+                    // alright... so now how do I give access to the controller?
                 });
             }
         }
