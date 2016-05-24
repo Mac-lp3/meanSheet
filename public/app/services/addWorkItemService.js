@@ -11,6 +11,54 @@ angular.module('addWorkItemService', [])
     self.addedLeave = [];
     self.projectList = [];
     self.taskList = [];
+
+    const workItemMap = {};
+    let propName = '' + $rootScope.TASK_WORK_ITEM_TYPE;
+    workItemMap[propName] = [];
+    propName = '' + $rootScope.PROJECT_WORK_ITEM_TYPE;
+    workItemMap[propName] = [];
+    propName = '' + $rootScope.LEAVE_WORK_ITEM_TYPE;
+    workItemMap[propName] = [];
+
+    self.populateModal = function (queryString, currentLineItems) {
+        
+        let urlPostFix = '';
+
+        // step 1, build a url for each resource.
+        
+        if (queryString) {
+            urlPostFix = '?q=' + queryString;
+        }
+
+        let urlToUse = '';
+
+        for (let property in workItemMap) {
+
+            if (workItemMap.hasOwnProperty(property)) {
+
+                urlToUse = '/' + $rootScope.URL_MAPPINGS[property] + urlPostFix;
+                
+                $http({
+
+                    method : 'get',
+                    url : urlToUse
+
+                }).then(function success(response) {
+
+                    // check if the time sheet is empty...
+                    if (typeof currentLineItems !== 'undefined' && currentLineItems.length > 0) {
+                        
+                        for (let i = 0; i < response.data.length; ++i) {
+
+                            if (self.isAlreadyOnTimeSheet(currentLineItems, property, response.data[i].code)) {
+                                response.data.splice(i, 1);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    };
     
     /*
      * Get tasks for display in the Tasks tab of the work item modal
@@ -28,6 +76,7 @@ angular.module('addWorkItemService', [])
 
         // use the basic get url otherwise
         urlToUse = '/tasks';
+
       }
 
       return $http({
@@ -120,7 +169,7 @@ angular.module('addWorkItemService', [])
         // update the current list and return
         self.projectList = response.data;
         return self.projectList;
-        
+
       });
 
     }
@@ -140,6 +189,23 @@ angular.module('addWorkItemService', [])
       }
 
       return isAlready;
+    }
+
+    self.removeItemFromModalList = function(workItemType, workItemCode) {
+
+        for(let i = 0; i < self.taskList.length; ++i){
+
+            if (self.taskList[i].workItemType == workItemType) {
+
+                if (self.taskList[i].code == workItemCode){
+
+                    self.taskList.splice(i, 1);
+                    break;
+                }
+            }
+        }
+
+        return self.taskList;
     }
 
     self.removeTaskFromModalList = function(workItemCode) {
