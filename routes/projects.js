@@ -13,24 +13,20 @@ router.get('/', function(req, res, next) {
 
 	if (queryString) {
 
-		console.log('querying projects: ' + queryString);
-
 	    var myRe = new RegExp(queryString);
 	    
 	    Project.find({ $or : [{code : myRe}, {author : myRe}, {creator : myRe}, {description : myRe}] }, 
-	    	function (err, projects){
+	    	
+            function (err, projects){
 	    		// TODO what do???
 	        	if (err)
 	            	console.log(err);
 
                 // TODO how log??
-                console.log('looking for: ' + myRe);
                 res.json(projects);
             }
 	    );
     } else {
-
-        console.log('grabbing all projects...');
 
         // TODO what do I look for? how much to limit?
         Project.find({},
@@ -56,7 +52,6 @@ router.get('/:projectCode', function(req, res, next) {
         if (err)
             console.log(err);
 
-        console.log('looking for: ' + myRe);
         res.json(project);
     });
 
