@@ -63,15 +63,18 @@ angular.module('addWorkItemService', [])
         // update the current list and return
         self.taskList = response.data;
         return self.taskList;
+
       });
     }
 
     /*
-     * Get projects for display in the Projects tab of the work item modal
+     * Gets a list of projects for display in the Projects tab of the work item modal.
+     * Preforms a search if a query string is provided. Will remove any projects that 
+     * are already on the time sheet.
      */
     self.getModalProjectList = function (queryString, currentLineItems) {
 
-      var urlToUse = '';
+      let urlToUse = '';
 
       if (queryString) {
 
@@ -85,26 +88,28 @@ angular.module('addWorkItemService', [])
       }
 
       return $http({
+
         method : 'get',
         url : urlToUse
+
       }).then(function success(response){
 
-        // check if the time sheet is empty...
+        // if the time sheet isn't empty...
         if (currentLineItems) {
 
-          // for each LineItem...
-          for (var i = 0; i < currentLineItems.length; i++) {
+          // then for each time sheet LineItem...
+          for (let i = 0; i < currentLineItems.length; ++i) {
             
-            // if it is a project...
+            // see if it is a project...
             if (currentLineItems[i].workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
 
-              // search the returned project list...
-              for (var j = 0; j < response.data.length; j++) {
+              // if it is, iterate over the returned project list...
+              for (let j = 0; j < response.data.length; ++j) {
                 
                 // for a project code match...
                 if (response.data[j].code == currentLineItems[i].workItemCode) {
 
-                  // and remove any that you find.
+                  // and remove it from the modal list.
                   response.data.splice(j, 1);
                 }
               }
@@ -115,6 +120,7 @@ angular.module('addWorkItemService', [])
         // update the current list and return
         self.projectList = response.data;
         return self.projectList;
+        
       });
 
     }
