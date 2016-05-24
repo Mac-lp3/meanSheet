@@ -13,11 +13,6 @@ angular.module('DashboardController', ['ngRoute'])
 .controller('DashboardController', ['addWorkItemService', '$rootScope', '$scope', '$http', 
   function(addWorkItemService, $rootScope, $scope, $http) {
 
-    /* PUT AS LITTLE AS POSSIBLE IN ROOT SCOPE */
-    $rootScope.TASK_WORK_ITEM_TYPE = 'Task';
-    $rootScope.PROJECT_WORK_ITEM_TYPE = 'Project';
-    $rootScope.LEAVE_WORK_ITEM_TYPE = 'Leave';
-
     /* used to construct a readable date string */
     const monthNames = [
         "Jan", "Feb", "Mar",
@@ -26,13 +21,12 @@ angular.module('DashboardController', ['ngRoute'])
         "Nov", "Dec"
     ];
 
+    const self = this;
+    self.datePickerInput = '';
+
     $scope.currentTimeSheet = {};
     $scope.currentDateUrlString = {};
     $scope.readableDate = '';
-    //$scope.queryString = '';
-    
-    const self = this;
-    self.datePickerInput = '';
 
     self.changeDate = function (valueOrIncrement) {
         
@@ -102,7 +96,9 @@ angular.module('DashboardController', ['ngRoute'])
 
       addWorkItemService.getModalProjectList(stringQuery, $scope.currentTimeSheet.lineItems).then(
         function(d) { $scope.modalProjectList = d; });
-      
+
+      addWorkItemService.populateModal(stringQuery, $scope.currentTimeSheet.lineItems);
+
       $scope.queryString = stringQuery;
 
     }
@@ -111,10 +107,10 @@ angular.module('DashboardController', ['ngRoute'])
 
       if (workItemType) {
 
-        // Check if it's already on the time sheet
+        // Check work item is already on the time sheet
         const skip = addWorkItemService.isAlreadyOnTimeSheet($scope.currentTimeSheet.lineItems, workItemType, workItemCode);
 
-        // If not, then work item data
+        // If not, then add work item
         if (!skip) {
 
           let formToPost = {};
@@ -122,12 +118,14 @@ angular.module('DashboardController', ['ngRoute'])
 
           // Build formToPost and cleanUpFunction based on work item type
           if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
-            formToPost = {'workItemType' : $rootScope.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+
+            formToPost = { 'workItemType' : $rootScope.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode };
             cleanUpFunction = addWorkItemService.removeTaskFromModalList;
+
           }
 
           if (workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
-            formToPost = {'workItemType' : $rootScope.PROJECT_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
+            formToPost = { 'workItemType' : $rootScope.PROJECT_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
             cleanUpFunction = addWorkItemService.removeProjectFromModalList;
           }
 
@@ -208,26 +206,31 @@ angular.module('DashboardController', ['ngRoute'])
       }
     }
 
-    self.postTimeSheet = function(){
-      $http({
-        method : 'post',
-        data : {timeSheet : $scope.currentTimeSheet},
-        url : '/timeSheets/' + $scope.currentDateUrlString 
-      }).then(function success(response){
-        $scope.currentDateUrlString = $scope.currentDateUrlString ;
-        $scope.currentTimeSheet = response.data;
-      });
+    self.saveTimeSheet = function(action){
+        //
+        $http({
+
+            method : 'post',
+            data : { timeSheet : $scope.currentTimeSheet},
+            url : '/timeSheets/' + $scope.currentDateUrlString 
+
+        }).then(function success(response){
+            
+            $scope.currentDateUrlString = $scope.currentDateUrlString ;
+            $scope.currentTimeSheet = response.data;
+
+        });
     }
 
    	/* build initial date string */
     const today = new Date();
-    const dd = today.getDate();
-    const mm = today.getMonth()+1; //January is 0!
-    const yyyy = today.getFullYear();
-    $scope.readableDate = monthNames[mm - 1] + ' ' + dd + ' ' + yyyy;
+    const day = today.getDate();
+    const month = today.getMonth() + 1; //January is 0!
+    const year = today.getFullYear();
+    $scope.readableDate = monthNames[month - 1] + ' ' + day + ' ' + year;
 
     /* get today's time sheet */
-    self.getTimeSheet(yyyy + '-' + mm + '-' + dd);
+    self.getTimeSheet(year + '-' + month + '-' + day);
 
     /* populate work items modal */
     addWorkItemService.getModalProjectList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalProjectList = obj;});
