@@ -34,7 +34,7 @@ router.get('/', function(req, res, next) {
 
                 // TODO what do??
                 if (err)
-                    console.log('err');
+                    console.log(err);
 
                 res.json(projects);
             }
