@@ -32,13 +32,15 @@ angular.module('addWorkItemService', [])
 
         let urlToUse = '';
 
+        let promiseList = [];
+
         for (let property in workItemMap) {
 
             if (workItemMap.hasOwnProperty(property)) {
 
                 urlToUse = '/' + $rootScope.URL_MAPPINGS[property] + urlPostFix;
                 
-                $http({
+                promiseList.push($http({
 
                     method : 'get',
                     url : urlToUse
@@ -57,13 +59,16 @@ angular.module('addWorkItemService', [])
 
                         }
 
-                        workItemMap[property] = response.data;
+                        // workItemMap[property] = response.data;
                     }
 
-                    // alright... so now how do I give access to the controller?
-                });
+                    return { property : response.data};
+
+                }));
             }
         }
+        
+        return promiseList;
     };
     
     /*

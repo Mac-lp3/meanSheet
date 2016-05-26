@@ -37,7 +37,7 @@
                   <td>{{task.description}}</td>
                   <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(TASK_WORK_ITEM_TYPE, task.code);">Add</button></td>
                 </tr -->
-                <tr ng-repeat="task in dashCtrl.addWorkItemService.workItemMap[TASK_WORK_ITEM_TYPE]">
+                <tr ng-repeat="task in workItemMap[tasks]">
                   <td>{{task.code}}</td>
                   <td>{{task.description}}</td>
                   <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(TASK_WORK_ITEM_TYPE, task.code);">Add</button></td>

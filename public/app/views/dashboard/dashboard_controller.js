@@ -10,8 +10,8 @@ angular.module('DashboardController', ['ngRoute'])
   });
 }])
 
-.controller('DashboardController', ['addWorkItemService', '$rootScope', '$scope', '$http', 
-  function(addWorkItemService, $rootScope, $scope, $http) {
+.controller('DashboardController', ['addWorkItemService', '$rootScope', '$scope', '$http', '$q',
+  function(addWorkItemService, $rootScope, $scope, $http, $q) {
 
     /* used to construct a readable date string */
     const monthNames = [
@@ -97,8 +97,17 @@ angular.module('DashboardController', ['ngRoute'])
         // addWorkItemService.getModalProjectList(stringQuery, $scope.currentTimeSheet.lineItems).then(
         //   function(d) { $scope.modalProjectList = d; });
 
-        addWorkItemService.populateModal(stringQuery, $scope.currentTimeSheet.lineItems);
-        $scope.workItemMap = addWorkItemService.workItemMap;
+        let promises = addWorkItemService.populateModal(stringQuery, $scope.currentTimeSheet.lineItems);
+
+        $q.all(promises).then(function (rez) {
+
+            console.log(rez);
+            $scope.workItemMap = rez;
+
+        }).catch(function (err) {
+
+            console.log(err);
+        });
 
         $scope.queryString = stringQuery;
     }
