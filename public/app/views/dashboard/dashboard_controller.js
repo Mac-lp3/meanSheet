@@ -27,6 +27,7 @@ angular.module('DashboardController', ['ngRoute'])
     $scope.currentTimeSheet = {};
     $scope.currentDateUrlString = {};
     $scope.readableDate = '';
+    $scope.workItemMap = {};
 
     self.changeDate = function (valueOrIncrement) {
         
@@ -123,42 +124,26 @@ angular.module('DashboardController', ['ngRoute'])
         // If not, then add work item
         if (!skip) {
 
-          let formToPost = {};
-          let cleanUpFunction = {};
+            // post it
+            $http({
 
-          // Build formToPost and cleanUpFunction based on work item type
-          if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
+                method : 'post',
+                url : '/timeSheets/' + $scope.currentDateUrlString + '/lineItems/',
+                data : { 'workItemType' : workItemType, 'workItemCode' : workItemCode }
 
-            formToPost = { 'workItemType' : $rootScope.TASK_WORK_ITEM_TYPE, 'workItemCode' : workItemCode };
-            cleanUpFunction = addWorkItemService.removeTaskFromModalList;
-
-          }
-
-          if (workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
-            formToPost = { 'workItemType' : $rootScope.PROJECT_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
-            cleanUpFunction = addWorkItemService.removeProjectFromModalList;
-          }
-
-          if (workItemType == $rootScope.LEAVE_WORK_ITEM_TYPE) {
-            formToPost = {'workItemType' : $rootScope.LEAVE_WORK_ITEM_TYPE, 'workItemCode' : workItemCode};
-          }
-
-          // post it
-          $http({
-            method : 'post',
-            url : '/timeSheets/' + $scope.currentDateUrlString + '/lineItems/',
-            data : formToPost
-          }).then(function success(response){
+            }).then(function success(response){
             
-            // add the work item to the time sheet
-            $scope.currentTimeSheet.lineItems.push(response.data);
+                // add the work item to the time sheet
+                $scope.currentTimeSheet.lineItems.push(response.data);
 
-            // remove the work item from the modal
-            cleanUpFunction(workItemCode);
-          });
+                // remove the work item from the modal
+                $scope.workItemMap = addWorkItemService.removeItemFromModalList($scope.workItemMap, workItemType, workItemCode);
+
+            });
+
         } else {
-          // TODO
-          // this means it is in modal AND on time sheet. need to remove...
+            // TODO
+            // this means it is in modal AND on time sheet. need to remove...
         }
       }
     }

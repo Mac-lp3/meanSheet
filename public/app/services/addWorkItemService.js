@@ -44,19 +44,20 @@ angular.module('addWorkItemService', [])
             }).then(function success(response) {
 
                 // check if the time sheet is empty...
+                let data = response.data;
                 if (typeof currentLineItems !== 'undefined' && currentLineItems.length > 0) {
                     
-                    for (let i = 0; i < response.data.length; ++i) {
+                    for (let i = 0; i < data.length; ++i) {
 
-                        if (self.isAlreadyOnTimeSheet(currentLineItems, workItemNameList[i], response.data[i].code)) {
+                        if (self.isAlreadyOnTimeSheet(currentLineItems, workItemNameList[i], data[i].code)) {
 
-                            response.data.splice(i, 1);
+                            data.splice(i, 1);
                         }
                     }
                 }
 
                 let tempObject = {};
-                tempObject[workItemNameList[i]] = response.data;
+                tempObject[workItemNameList[i]] = data;
                 return tempObject;
 
             }));
@@ -72,7 +73,7 @@ angular.module('addWorkItemService', [])
       for (var i = 0; i < currentLineItems.length; i++){
 
           if (currentLineItems[i].workItemType === workItemType) {
-              if (currentLineItems[i].code == workItemCode) {
+              if (currentLineItems[i].workItemCode === workItemCode) {
                   isAlready = true;
                   break;
               }
@@ -83,21 +84,18 @@ angular.module('addWorkItemService', [])
 
     };
 
-    self.removeItemFromModalList = function(workItemType, workItemCode) {
+    self.removeItemFromModalList = function(workItemMap, workItemType, workItemCode) {
 
-        for(let i = 0; i < self.taskList.length; ++i){
+        for(let i = 0; i < workItemMap[workItemType].length; ++i){
 
-            if (self.taskList[i].workItemType == workItemType) {
+            if (workItemMap[workItemType][i].code == workItemCode){
 
-                if (self.taskList[i].code == workItemCode){
-
-                    self.taskList.splice(i, 1);
-                    break;
-                }
+                workItemMap[workItemType].splice(i, 1);
+                break;
             }
         }
 
-        return self.taskList;
+        return workItemMap;
     };
 
     self.removeTaskFromModalList = function(workItemCode) {
