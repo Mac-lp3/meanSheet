@@ -91,18 +91,21 @@ angular.module('DashboardController', ['ngRoute'])
 
     self.searchWorkItems = function (stringQuery) {
 
-        // addWorkItemService.getModalTaskList(stringQuery, $scope.currentTimeSheet.lineItems).then(
-        //   function(d) { $scope.modalTaskList = d; });
-
-        // addWorkItemService.getModalProjectList(stringQuery, $scope.currentTimeSheet.lineItems).then(
-        //   function(d) { $scope.modalProjectList = d; });
-
         let promises = addWorkItemService.populateModal(stringQuery, $scope.currentTimeSheet.lineItems);
 
         $q.all(promises).then(function (rez) {
 
-            console.log(rez);
-            $scope.workItemMap = rez;
+          for (let i = 0; i < rez.length; ++i) {
+            for (let property in rez[i]) {
+              console.log(property);
+              console.log(rez[i][property]);
+
+              if (!$scope.workItemMap) {
+                $scope.workItemMap = {};
+              }
+              $scope.workItemMap[property] = rez[i][property];
+            }
+          }
 
         }).catch(function (err) {
 
@@ -242,7 +245,8 @@ angular.module('DashboardController', ['ngRoute'])
     self.getTimeSheet(year + '-' + month + '-' + day);
 
     /* populate work items modal */
-    addWorkItemService.getModalProjectList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalProjectList = obj;});
-    addWorkItemService.getModalTaskList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalTaskList = obj;});
+    self.searchWorkItems('');
+    //addWorkItemService.getModalProjectList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalProjectList = obj;});
+    //addWorkItemService.getModalTaskList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalTaskList = obj;});
 
 }]);

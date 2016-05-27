@@ -32,12 +32,7 @@
                   <th>Description</th>
                   <th></th>
                 </tr>
-                <!-- tr ng-repeat="task in modalTaskList">
-                  <td>{{task.code}}</td>
-                  <td>{{task.description}}</td>
-                  <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(TASK_WORK_ITEM_TYPE, task.code);">Add</button></td>
-                </tr -->
-                <tr ng-repeat="task in workItemMap[tasks]">
+                <tr ng-repeat="task in workItemMap['' + TASK_WORK_ITEM_TYPE]">
                   <td>{{task.code}}</td>
                   <td>{{task.description}}</td>
                   <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(TASK_WORK_ITEM_TYPE, task.code);">Add</button></td>
@@ -54,7 +49,7 @@
                   <th>Description</th>
                   <th></th>
                 </tr>
-                <tr ng-repeat="project in modalProjectList">
+                <tr ng-repeat="project in workItemMap['' + PROJECT_WORK_ITEM_TYPE]">
                   <td>{{project.code}}</td>
                   <td>{{project.description}}</td>
                   <td><button class="btn btn-xs btn-primary" ng-click="dashCtrl.addLineItem(PROJECT_WORK_ITEM_TYPE, project.code);">Add</button></td>
