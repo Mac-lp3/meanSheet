@@ -1,24 +1,28 @@
-var express = require('express');
-var testData = require('../test/datastore/testData');
-var Task = require('../model/task');
-var moment = require('moment');
-var async = require('async');
-var router = express.Router();
+'use strict';
+
+const express = require('express');
+const testData = require('../test/datastore/testData');
+const Task = require('../model/task');
+const moment = require('moment');
+const async = require('async');
+const router = express.Router();
 
 /* index URL. */
 router.get('/', function(req, res, next) {
 
 	// check if a query has been provided
-	var queryString = req.query.q;
+	const queryString = req.query.q;
 
-    res.sendStatus(200);
+    let leave = [{'code' : 'PTO'}, {'code' : 'JURY'}, {'code' : 'SICK'}];
+
+    res.json(leave);
     
 });
 
 /* individual task. */
 router.get('/:leaveId', function(req, res, next) {
 
-	var taskCode = req.params.taskCode;
+	const taskCode = req.params.taskCode;
     
     Task.findOne({code : taskCode}, function (err, task){
 
