@@ -150,56 +150,27 @@ angular.module('DashboardController', ['ngRoute'])
 
     self.removeLineItem = function(workItemType, workItemCode) {
 
-      // check what kind of work item we are looking for
-      if (workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
-
         // look through each line item..
         for (var i = 0; i < $scope.currentTimeSheet.lineItems.length; i++) {
 
-          // if it is a task...
-          if ($scope.currentTimeSheet.lineItems[i].workItemType == $rootScope.TASK_WORK_ITEM_TYPE) {
+            // if it is a task...
+            if ($scope.currentTimeSheet.lineItems[i].workItemType == workItemType) {
 
-            // and if it has the same code...
-            if ($scope.currentTimeSheet.lineItems[i].workItemCode == workItemCode) {
+                // and if it has the same code...
+                if ($scope.currentTimeSheet.lineItems[i].workItemCode == workItemCode) {
 
-              // remove it...
-              $scope.currentTimeSheet.lineItems.splice(i, 1);
+                    // remove it...
+                    $scope.currentTimeSheet.lineItems.splice(i, 1);
 
-              // refresh task modal list...
-              addWorkItemService.getModalTaskList($scope.queryString, $scope.currentTimeSheet.lineItems).then(
-                function(d) { $scope.modalTaskList = d; });
+                    // refresh task modal list...
+                    self.searchWorkItems($scope.queryString);
 
-              // and break.
-              break;
+                    // and break.
+                    break;
+                }
             }
-          }
         }
-      }
-      if (workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
-
-        // look through each line item..
-        for (var i = 0; i < $scope.currentTimeSheet.lineItems.length; i++) {
-
-          // if it is a project...
-          if ($scope.currentTimeSheet.lineItems[i].workItemType == $rootScope.PROJECT_WORK_ITEM_TYPE) {
-
-            // and if it has the same code...
-            if ($scope.currentTimeSheet.lineItems[i].workItemCode == workItemCode) {
-
-              // remove it...
-              $scope.currentTimeSheet.lineItems.splice(i, 1);
-
-              // refresh task modal list...
-              addWorkItemService.getModalProjectList($scope.queryString, $scope.currentTimeSheet.lineItems).then(
-                function(d) { $scope.modalProjectList = d; });
-
-              // and break.
-              break;
-            }
-          }
-        }
-      }
-    }
+    };
 
     self.saveTimeSheet = function(action){
 

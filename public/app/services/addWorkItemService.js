@@ -98,28 +98,4 @@ angular.module('addWorkItemService', [])
         return workItemMap;
     };
 
-    self.removeTaskFromModalList = function(workItemCode) {
-
-        for(var i = 0; i < self.taskList.length; i++){
-          if (self.taskList[i].code == workItemCode){
-            self.taskList.splice(i, 1);
-            break;
-          }
-        }
-
-        return self.taskList;
-    };
-
-    self.removeProjectFromModalList = function(workItemCode) {
-
-        for(var i = 0; i < self.projectList.length; i++){
-          if (self.projectList[i].code == workItemCode){
-            self.projectList.splice(i, 1);
-            break;
-          }
-        }
-
-        return self.projectList;
-    };
-
 }]);
