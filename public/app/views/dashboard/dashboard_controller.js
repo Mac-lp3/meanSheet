@@ -97,8 +97,6 @@ angular.module('DashboardController', ['ngRoute'])
 
           for (let i = 0; i < rez.length; ++i) {
             for (let property in rez[i]) {
-              console.log(property);
-              console.log(rez[i][property]);
 
               if (!$scope.workItemMap) {
                 $scope.workItemMap = {};
@@ -246,7 +244,5 @@ angular.module('DashboardController', ['ngRoute'])
 
     /* populate work items modal */
     self.searchWorkItems('');
-    //addWorkItemService.getModalProjectList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalProjectList = obj;});
-    //addWorkItemService.getModalTaskList('', $scope.currentTimeSheet.lineItems).then(function(obj){ $scope.modalTaskList = obj;});
 
 }]);

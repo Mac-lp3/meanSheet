@@ -12,14 +12,12 @@ angular.module('addWorkItemService', [])
     self.projectList = [];
     self.taskList = [];
 
-    const workItemMap = {};
-    let propName = '' + $rootScope.TASK_WORK_ITEM_TYPE;
-    workItemMap[propName] = [];
-    propName = '' + $rootScope.PROJECT_WORK_ITEM_TYPE;
-    workItemMap[propName] = [];
-    propName = '' + $rootScope.LEAVE_WORK_ITEM_TYPE;
-    workItemMap[propName] = [];
-
+    const workItemNameList = [
+        $rootScope.TASK_WORK_ITEM_TYPE, 
+        $rootScope.PROJECT_WORK_ITEM_TYPE, 
+        $rootScope.LEAVE_WORK_ITEM_TYPE
+    ];
+    
     self.populateModal = function (queryString, currentLineItems) {
         
         let urlPostFix = '';
@@ -34,39 +32,34 @@ angular.module('addWorkItemService', [])
 
         let promiseList = [];
 
-        for (let property in workItemMap) {
+        for (let i in workItemNameList) {
 
-            if (workItemMap.hasOwnProperty(property)) {
+            urlToUse = '/' + $rootScope.URL_MAPPINGS[workItemNameList[i]] + urlPostFix;
+            
+            promiseList.push($http({
 
-                urlToUse = '/' + $rootScope.URL_MAPPINGS[property] + urlPostFix;
-                
-                promiseList.push($http({
+                method : 'get',
+                url : urlToUse
 
-                    method : 'get',
-                    url : urlToUse
+            }).then(function success(response) {
 
-                }).then(function success(response) {
+                // check if the time sheet is empty...
+                if (typeof currentLineItems !== 'undefined' && currentLineItems.length > 0) {
+                    
+                    for (let i = 0; i < response.data.length; ++i) {
 
-                    // check if the time sheet is empty...
-                    if (typeof currentLineItems !== 'undefined' && currentLineItems.length > 0) {
-                        
-                        for (let i = 0; i < response.data.length; ++i) {
+                        if (self.isAlreadyOnTimeSheet(currentLineItems, workItemNameList[i], response.data[i].code)) {
 
-                            if (self.isAlreadyOnTimeSheet(currentLineItems, property, response.data[i].code)) {
-
-                                response.data.splice(i, 1);
-                            }
-
+                            response.data.splice(i, 1);
                         }
-
                     }
+                }
 
-                    let tempObject = {};
-                    tempObject[property] = response.data;
-                    return tempObject;
+                let tempObject = {};
+                tempObject[workItemNameList[i]] = response.data;
+                return tempObject;
 
-                }));
-            }
+            }));
         }
         
         return promiseList;
