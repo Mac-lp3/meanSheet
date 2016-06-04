@@ -4,22 +4,45 @@ var User = require('../model/user');
 var moment = require('moment');
 var router = express.Router();
 
-router.post('/login', function(req, res, next) {
+/*
+ * Post a form - get your token
+ */
+router.post('/auth', function(req, res, next) {
     
-    console.log('tryna sign in');
+    console.log('tryna get at them tokens');
 
     const emailAddress = req.body.emailAddress;
 
-    Person.findOne({ 'email': emailAddress } , function(err, user){
+    User.findOne({ 'emailAddress': emailAddress } , function(err, user){
         
         if (err) {
-            // TODO
+            res.status(401).json({ success: false, message: 'An error occurred durring authentication.' })
         }
 
         if (user) {
-            res.status(200).json({ 'emailAddress': emailAddress });
+
+            // TODO validate password
+            console.log(user);
+            console.log("look man.. ");
+            user.comparePassword(function(err, isMatch) { 
+
+                if(err){
+                    
+                    res.status(401).json({ success: false, message: 'An error occurred durring authentication.' })
+                } else if (isMatch) {
+
+                    res.status(200).json({ 'emailAddress': emailAddress });
+                } else {
+                    
+                    res.status(401).json({ success: false, message: 'Authentication failed. Passwords did not match.' })
+                }
+
+            });
+
         } else {
-        	res.status(403);
+            // user was not found
+            console.log("look man... idk");
+            res.sendStatus(403);
         }
 
     });

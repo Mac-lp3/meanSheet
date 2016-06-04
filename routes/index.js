@@ -21,7 +21,7 @@ router.get('/login', function(req, res, next) {
 
 });
 
-/* POST login form. */
+/* POST new user form. */
 router.post('/login', function(req, res, next) {
 
     console.log('tryna sign in');
@@ -37,11 +37,13 @@ router.post('/login', function(req, res, next) {
         if (user) {
 
             // TODO validate password
+            console.log(user);
+            console.log("look man.. ");
             res.status(200).json({ 'emailAddress': emailAddress });
 
         } else {
             // user was not found
-            
+            console.log("look man... idk");
             res.sendStatus(403);
         }
 
