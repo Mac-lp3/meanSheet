@@ -216,6 +216,8 @@ router.post('/:dateString/lineItems', function(req, res, next){
                 lineItem.workItemCode = theWorkItem.code;
                 lineItem.workItemName = theWorkItem.name;
                 lineItem.workItemType = this.workItemType;
+
+                // TODO how to track user names.
                 lineItem.username = 'Jmoney';
 
                 let sundayDate = moment(isoDate, 'YYYY-MM-DD');
