@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/app')));
 
 app.use('/', index);
-//app.use('/login', auth);
+app.use('/auth', auth);
 app.use('/setup', setup);
 app.use('/timeSheets', timeSheets);
 app.use('/users', users);
