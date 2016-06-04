@@ -37,8 +37,8 @@ angular.module('DevLoginController', ['ngRoute'])
 
         $http({
 
-            method : 'POST',
-            url : '/login',
+            method : 'post',
+            url : '/auth',
             data : {
                 emailAddress : self.emailAddress,
                 password : self.password

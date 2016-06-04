@@ -25,6 +25,7 @@ angular.module('LoginController', ['ngRoute'])
     self.formConfirmPassword = '';
 
     self.postSignUp = function () {
+        
         // TODO make sure confirmation matches
         $http({
             method : 'post',
@@ -41,7 +42,7 @@ angular.module('LoginController', ['ngRoute'])
     self.postSignIn = function () {
         $http({
             method : 'post',
-            url : '/login',
+            url : '/auth',
             data : {
                 emailAddress : self.emailAddress,
                 password : password
