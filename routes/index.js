@@ -21,36 +21,6 @@ router.get('/login', function(req, res, next) {
 
 });
 
-/* POST new user form. */
-router.post('/login', function(req, res, next) {
-
-    console.log('tryna sign in');
-
-    const emailAddress = req.body.emailAddress;
-
-    User.findOne({ 'emailAddress': emailAddress } , function(err, user){
-        
-        if (err) {
-            // TODO
-        }
-
-        if (user) {
-
-            // TODO validate password
-            console.log(user);
-            console.log("look man.. ");
-            res.status(200).json({ 'emailAddress': emailAddress });
-
-        } else {
-            // user was not found
-            console.log("look man... idk");
-            res.sendStatus(403);
-        }
-
-    });
-
-});
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   
