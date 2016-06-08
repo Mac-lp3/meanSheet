@@ -10,7 +10,7 @@ gulp.task('dev', function() {
     script: 'bin/www',
     watch: ['app.js', 'routes/*', 'model/*'],
     ext: 'js',
-    env: { 'NODE_ENV': 'development' }
+    env: { 'NODE_ENV': 'development', 'SIGN_SECRET': 'kingofnails' }
   })
  
   browserSync.init({
