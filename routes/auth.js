@@ -10,31 +10,35 @@ const router = express.Router();
 /*
  * Post a form - get your token
  */
-router.post('/auth', function(req, res, next) {
+router.post('/', function(req, res, next) {
     
     console.log('tryna get at them tokens');
 
     const emailAddress = req.body.emailAddress;
+    const password = req.body.password;
 
     User.findOne({ 'emailAddress': emailAddress } , function(err, user){
         
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
-        console.log('================================');
-        console.log('********************************');
         if (err) {
             res.status(401).json({ success: false, message: 'An error occurred durring authentication.' })
         }
 
         if (user) {
 
-            user.comparePassword(function(err, isMatch) { 
+            user.comparePassword(password, function(err, isMatch) {
 
                 if(err){
+
                     console.log(err);
                     res.status(401).json({ success: false, message: 'An error occurred durring authentication.' })
+
                 } else if (isMatch) {
 
-                    res.status(200).json({ 'emailAddress': emailAddress });
+                    const token = jwt.sign({role : 'T1', department : user.department}, process.env.SIGN_SECRET, {
+                        expiresIn: '24h' // expires in 24 hours
+                    });
+
+                    res.status(200).json({ success: true, 'token':  token});
                 } else {
                     
                     res.status(401).json({ success: false, message: 'Authentication failed. Passwords did not match.' })
@@ -44,8 +48,8 @@ router.post('/auth', function(req, res, next) {
 
         } else {
             // user was not found
-            console.log("look man... idk");
-            res.sendStatus(403);
+            console.log("User was not found");
+            res.status(401).json({ success: false, message: 'Authentication failed. User does not exist.' })
         }
 
     });
