@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('DevLoginController', ['ngRoute'])
+angular.module('DevLoginController', ['ngRoute', 'ngCookies'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/login', {
@@ -10,7 +10,7 @@ angular.module('DevLoginController', ['ngRoute'])
   });
 }])
 
-.controller('DevLoginController', ['$http', '$location', function($http, $location) {
+.controller('DevLoginController', ['$http', '$location', '$cookies', function($http, $location, $cookies) {
 
     const self = this;
     self.emailAddress = '';
@@ -41,6 +41,7 @@ angular.module('DevLoginController', ['ngRoute'])
         }).then(function success(response){
 
           // forward the user to the dashboard
+          $cookies.put('token', response.data);
           $location.path('/dashboard');
 
         }, function error(response){
