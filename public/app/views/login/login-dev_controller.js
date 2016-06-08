@@ -41,7 +41,7 @@ angular.module('DevLoginController', ['ngRoute', 'ngCookies'])
         }).then(function success(response){
 
           // forward the user to the dashboard
-          $cookies.put('token', response.data);
+          $cookies.put('token', response.data.token);
           $location.path('/dashboard');
 
         }, function error(response){
