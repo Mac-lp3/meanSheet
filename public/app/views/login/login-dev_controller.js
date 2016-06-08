@@ -19,20 +19,14 @@ angular.module('DevLoginController', ['ngRoute'])
 
     self.submit = function () {
 
-        if (self.emailAddress === 'timeLogging@mean.com'){
-            self.password = 'timeLoggingPassword';
-        }
-        if (self.emailAddress === 'timeApproving@mean.com'){
-            self.password = 'timeApprovingPassword';
-        }
-        if (self.emailAddress === 'timeAnalyzing@mean.com'){
-            self.password = 'timeAnalyzingPassword';
-        }
-        if (self.emailAddress === 'slipster@lol.gov'){
+        if (self.emailAddress === 'TimeLoggingUser@mean.edu'){
             self.password = 'slippyfist';
         }
-        if (self.emailAddress === 'dollaz@IDK.gov'){
+        if (self.emailAddress === 'TimeApprovingUser@mean.edu'){
             self.password = '311insidejob';
+        }
+        if (self.emailAddress === 'TimeAnalyzingUser@mean.edu'){
+            self.password = 'badtouch';
         }
 
         $http({

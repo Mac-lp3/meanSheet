@@ -8,30 +8,24 @@ var moment = require('moment');
 
 /* Build test users */
 var user1 = new User();
-user1.username = 'Jmoney';
+user1.username = 'TimeLoggingUser';
 user1.password = 'slippyfist';
-user1.emailAddress = 'slipster@lol.gov';
-user1.department = 'LOL';
+user1.emailAddress = 'TimeLoggingUser@mean.edu';
+user1.department = 'developer';
 
 var user2 = new User();
-user2.username = 'Big$C';
+user2.username = 'TimeApprovingUser';
 user2.password = '311insidejob';
-user2.emailAddress = 'dollaz@IDK.gov';
-user2.department = 'IDK';
+user2.emailAddress = 'TimeApprovingUser@mean.edu';
+user2.department = 'management';
 
 var user3 = new User();
-user3.username = 'dave';
+user3.username = 'TimeAnalyzingUser';
 user3.password = 'badtouch';
-user3.emailAddress = 'serialz@wut.gov';
-user3.department = 'WUT';
+user3.emailAddress = 'TimeAnalyzingUser@mean.edu';
+user3.department = 'finance';
 
-var user4 = new User();
-user4.username = 'jizanthripus';
-user4.password = 'abc123';
-user4.emailAddress = 'gondo@idk.gov';
-user4.department = 'IDK';
-
-const testUsers = [user1, user2, user3, user4];
+const testUsers = [user1, user2, user3];
 
 /* build test work items */
 var project1 = new Project();
@@ -46,7 +40,7 @@ task1.code = 't01';
 task1.author = user3.username;
 task1.name = 'dat task';
 task1.description = 'a task assigned to a project.';
-task1.owner = user4.username;
+task1.owner = user3.username;
 task1.projectCode = 'p0002';
 
 var project2 = new Project();
@@ -55,7 +49,7 @@ project2.name = 'proj wid task';
 project2.description = 'okokokokokoookokokokok';
 project2.taskCodes.push(task1.code);
 project2.author = user3.username;
-project2.owner = user4.username;
+project2.owner = user1.username;
 
 var task2 = new Task();
 task2.code = 't02';

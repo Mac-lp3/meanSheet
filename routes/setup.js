@@ -11,22 +11,6 @@ var Task = require('../model/task');
 var Project = require('../model/project');
 var testData = require('../test/datastore/testData');
 
-router.get('/test/:someString', function (req, res, next) {
-    
-    var someString = req.params.someString;
-    var myRe = new RegExp(someString);
-    
-    Task.find({ $or : [{code : myRe}, {author : myRe}, {creator : myRe}, {description : myRe}] }, function (err, task){
-
-        if (err)
-            console.log(err);
-
-        console.log('looking for: ' + myRe);
-        res.json(task);
-    });
-
-});
-
 /* GET home page. */
 router.get('/workItems', function(req, res, next) {
 
